@@ -34,6 +34,7 @@
             label1 = new Label();
             label2 = new Label();
             btnLogin = new CustomControls.RJControls.RJButton();
+            Invalid = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -65,6 +66,7 @@
             tbPassword.Font = new Font("Roboto", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbPassword.Location = new Point(528, 554);
             tbPassword.Name = "tbPassword";
+            tbPassword.PasswordChar = '*';
             tbPassword.Size = new Size(234, 33);
             tbPassword.TabIndex = 2;
             // 
@@ -121,6 +123,20 @@
             btnLogin.UseVisualStyleBackColor = false;
             btnLogin.Click += btnLogin_Click;
             // 
+            // Invalid
+            // 
+            Invalid.Anchor = AnchorStyles.Top;
+            Invalid.AutoSize = true;
+            Invalid.BackColor = Color.Transparent;
+            Invalid.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Invalid.ForeColor = Color.Red;
+            Invalid.Location = new Point(547, 593);
+            Invalid.Name = "Invalid";
+            Invalid.Size = new Size(184, 15);
+            Invalid.TabIndex = 7;
+            Invalid.Text = "Invalid Username or Password";
+            Invalid.Visible = false;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -129,6 +145,7 @@
             BackgroundImage = Properties.Resources.Y_S_BACKGROUND;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1264, 681);
+            Controls.Add(Invalid);
             Controls.Add(btnLogin);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -152,5 +169,6 @@
         private Label label1;
         private Label label2;
         private CustomControls.RJControls.RJButton btnLogin;
+        private Label Invalid;
     }
 }

@@ -16,19 +16,37 @@ namespace Y_S_System
     public partial class Home : Form
     {
         public static Home instance;
-
-        public Home()
+        public string _role;
+        public int _logkey;
+        public Home(string role, int logkey)
         {
             InitializeComponent();
             loadRpanel(new OrderDetails());
-            loadMpanel(new ProductView());
+            loadMpanel(new ProductView(0));
+            _logkey = logkey;
+            _role = role;
+            if(_role == "Cashier")
+            {
+                btnFinnance.Visible = false;
+                btnProducts.Visible = false;
+            }
         }
         public void loadRpanel(object Form) //loads the right panel
         {
             if (this.RightPanel.Controls.Count > 0)
             {
-                this.RightPanel.Controls.RemoveAt(0);
+                Form previousForm = this.RightPanel.Controls[0] as Form;
+                if (previousForm != null)
+                {
+                    previousForm.Close();
+                    previousForm.Dispose();
+                }
             }
+            if (this.MidPanel.Controls.Count > 0)
+            {
+                this.MidPanel.Controls.RemoveAt(0);
+            }
+
             Form f = Form as Form;
             f.TopLevel = false;
             f.Dock = DockStyle.Fill;
@@ -40,8 +58,18 @@ namespace Y_S_System
         {
             if (this.MidPanel.Controls.Count > 0)
             {
+                Form previousForm = this.MidPanel.Controls[0] as Form;
+                if (previousForm != null)
+                {
+                    previousForm.Close();
+                    previousForm.Dispose();
+                }
+            }
+            if (this.MidPanel.Controls.Count > 0)
+            {
                 this.MidPanel.Controls.RemoveAt(0);
             }
+
             Form f = Form as Form;
             f.TopLevel = false;
             f.Dock = DockStyle.Fill;
@@ -67,12 +95,12 @@ namespace Y_S_System
         private void btnHome_Click(object sender, EventArgs e)
         {
             loadRpanel(new OrderDetails());
-            loadMpanel(new ProductView());
+            loadMpanel(new ProductView(0));
             tabChange(btnHome);
         }
         private void btnInventory_Click(object sender, EventArgs e)
         {
-            loadRpanel(new ProductDetails());
+            loadRpanel(new ProductDetails(_role, 1));
             loadMpanel(new InventoryView());
             tabChange(btnInventory);
         }
@@ -84,8 +112,8 @@ namespace Y_S_System
         }
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            loadRpanel(new ProductDetails());
-            loadMpanel(new ProductView());
+            loadRpanel(new ProductDetails(_role, 0));
+            loadMpanel(new ProductView(1));
             tabChange(btnProducts);
         }
         private void btnFinnance_Click(object sender, EventArgs e)
@@ -93,11 +121,6 @@ namespace Y_S_System
             loadRpanel(new FinanceDetails());
             loadMpanel(new FinanceView());
             tabChange(btnFinnance);
-        }
-
-        private void MidPanel_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

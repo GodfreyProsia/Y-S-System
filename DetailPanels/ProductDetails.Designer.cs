@@ -37,19 +37,24 @@
             label1 = new Label();
             tbProdPrice = new TextBox();
             label2 = new Label();
-            tbProdCode = new TextBox();
+            tbProdID = new TextBox();
             label3 = new Label();
             tbProdStock = new TextBox();
             label6 = new Label();
             cbProdUnit = new ComboBox();
             btnUploadPic = new CustomControls.RJControls.RJButton();
             dgvInventoryHis = new DataGridView();
-            tbnUpdateProd = new CustomControls.RJControls.RJButton();
+            btnUpdateProd = new CustomControls.RJControls.RJButton();
             label4 = new Label();
             label5 = new Label();
             btnAddProd = new CustomControls.RJControls.RJButton();
+            tbProdCode = new TextBox();
+            btnGenerate = new CustomControls.RJControls.RJButton();
+            pbBarcode = new PictureBox();
+            btnAddStock = new CustomControls.RJControls.RJButton();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventoryHis).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbBarcode).BeginInit();
             SuspendLayout();
             // 
             // tbProdName
@@ -139,13 +144,13 @@
             label2.TabIndex = 36;
             label2.Text = "Price";
             // 
-            // tbProdCode
+            // tbProdID
             // 
-            tbProdCode.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbProdCode.Location = new Point(69, 298);
-            tbProdCode.Name = "tbProdCode";
-            tbProdCode.Size = new Size(307, 27);
-            tbProdCode.TabIndex = 39;
+            tbProdID.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdID.Location = new Point(69, 298);
+            tbProdID.Name = "tbProdID";
+            tbProdID.Size = new Size(307, 27);
+            tbProdID.TabIndex = 39;
             // 
             // label3
             // 
@@ -155,9 +160,9 @@
             label3.ForeColor = Color.White;
             label3.Location = new Point(12, 301);
             label3.Name = "label3";
-            label3.Size = new Size(45, 19);
+            label3.Size = new Size(25, 19);
             label3.TabIndex = 38;
-            label3.Text = "Code";
+            label3.Text = "ID";
             // 
             // tbProdStock
             // 
@@ -212,6 +217,7 @@
             btnUploadPic.Text = "Upload";
             btnUploadPic.TextColor = Color.Black;
             btnUploadPic.UseVisualStyleBackColor = false;
+            btnUploadPic.Click += btnUploadPic_Click;
             // 
             // dgvInventoryHis
             // 
@@ -224,31 +230,31 @@
             dgvInventoryHis.Size = new Size(365, 224);
             dgvInventoryHis.TabIndex = 48;
             // 
-            // tbnUpdateProd
+            // btnUpdateProd
             // 
-            tbnUpdateProd.Anchor = AnchorStyles.Bottom;
-            tbnUpdateProd.BackColor = Color.FromArgb(110, 172, 218);
-            tbnUpdateProd.BackgroundColor = Color.FromArgb(110, 172, 218);
-            tbnUpdateProd.BorderColor = Color.Transparent;
-            tbnUpdateProd.BorderColor1 = Color.Transparent;
-            tbnUpdateProd.BorderColor2 = Color.Transparent;
-            tbnUpdateProd.BorderRadius = 0;
-            tbnUpdateProd.BorderRadius1 = 0;
-            tbnUpdateProd.BorderRadius2 = 0;
-            tbnUpdateProd.BorderSize = 0;
-            tbnUpdateProd.BorderSize1 = 0;
-            tbnUpdateProd.BorderSize2 = 0;
-            tbnUpdateProd.FlatAppearance.BorderSize = 0;
-            tbnUpdateProd.FlatStyle = FlatStyle.Flat;
-            tbnUpdateProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbnUpdateProd.ForeColor = Color.Black;
-            tbnUpdateProd.Location = new Point(140, 619);
-            tbnUpdateProd.Name = "tbnUpdateProd";
-            tbnUpdateProd.Size = new Size(106, 27);
-            tbnUpdateProd.TabIndex = 49;
-            tbnUpdateProd.Text = "Update";
-            tbnUpdateProd.TextColor = Color.Black;
-            tbnUpdateProd.UseVisualStyleBackColor = false;
+            btnUpdateProd.Anchor = AnchorStyles.Bottom;
+            btnUpdateProd.BackColor = Color.FromArgb(110, 172, 218);
+            btnUpdateProd.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnUpdateProd.BorderColor = Color.Transparent;
+            btnUpdateProd.BorderColor1 = Color.Transparent;
+            btnUpdateProd.BorderColor2 = Color.Transparent;
+            btnUpdateProd.BorderRadius = 0;
+            btnUpdateProd.BorderRadius1 = 0;
+            btnUpdateProd.BorderRadius2 = 0;
+            btnUpdateProd.BorderSize = 0;
+            btnUpdateProd.BorderSize1 = 0;
+            btnUpdateProd.BorderSize2 = 0;
+            btnUpdateProd.FlatAppearance.BorderSize = 0;
+            btnUpdateProd.FlatStyle = FlatStyle.Flat;
+            btnUpdateProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnUpdateProd.ForeColor = Color.Black;
+            btnUpdateProd.Location = new Point(140, 619);
+            btnUpdateProd.Name = "btnUpdateProd";
+            btnUpdateProd.Size = new Size(106, 27);
+            btnUpdateProd.TabIndex = 49;
+            btnUpdateProd.Text = "Update";
+            btnUpdateProd.TextColor = Color.Black;
+            btnUpdateProd.UseVisualStyleBackColor = false;
             // 
             // label4
             // 
@@ -302,22 +308,96 @@
             btnAddProd.UseVisualStyleBackColor = false;
             btnAddProd.Click += btnAddProd_Click;
             // 
+            // tbProdCode
+            // 
+            tbProdCode.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdCode.Location = new Point(171, 194);
+            tbProdCode.Name = "tbProdCode";
+            tbProdCode.Size = new Size(205, 27);
+            tbProdCode.TabIndex = 52;
+            // 
+            // btnGenerate
+            // 
+            btnGenerate.BackColor = Color.FromArgb(110, 172, 218);
+            btnGenerate.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnGenerate.BorderColor = Color.Transparent;
+            btnGenerate.BorderColor1 = Color.Transparent;
+            btnGenerate.BorderColor2 = Color.Transparent;
+            btnGenerate.BorderRadius = 0;
+            btnGenerate.BorderRadius1 = 0;
+            btnGenerate.BorderRadius2 = 0;
+            btnGenerate.BorderSize = 0;
+            btnGenerate.BorderSize1 = 0;
+            btnGenerate.BorderSize2 = 0;
+            btnGenerate.FlatAppearance.BorderSize = 0;
+            btnGenerate.FlatStyle = FlatStyle.Flat;
+            btnGenerate.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnGenerate.ForeColor = Color.Black;
+            btnGenerate.Location = new Point(251, 331);
+            btnGenerate.Name = "btnGenerate";
+            btnGenerate.Size = new Size(125, 27);
+            btnGenerate.TabIndex = 54;
+            btnGenerate.Text = "Generate Barcode";
+            btnGenerate.TextColor = Color.Black;
+            btnGenerate.UseVisualStyleBackColor = false;
+            btnGenerate.Click += btnGenerate_Click;
+            // 
+            // pbBarcode
+            // 
+            pbBarcode.Location = new Point(171, 104);
+            pbBarcode.Name = "pbBarcode";
+            pbBarcode.Size = new Size(206, 84);
+            pbBarcode.SizeMode = PictureBoxSizeMode.Zoom;
+            pbBarcode.TabIndex = 55;
+            pbBarcode.TabStop = false;
+            // 
+            // btnAddStock
+            // 
+            btnAddStock.Anchor = AnchorStyles.Bottom;
+            btnAddStock.BackColor = Color.FromArgb(110, 172, 218);
+            btnAddStock.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnAddStock.BorderColor = Color.Transparent;
+            btnAddStock.BorderColor1 = Color.Transparent;
+            btnAddStock.BorderColor2 = Color.Transparent;
+            btnAddStock.BorderRadius = 0;
+            btnAddStock.BorderRadius1 = 0;
+            btnAddStock.BorderRadius2 = 0;
+            btnAddStock.BorderSize = 0;
+            btnAddStock.BorderSize1 = 0;
+            btnAddStock.BorderSize2 = 0;
+            btnAddStock.FlatAppearance.BorderSize = 0;
+            btnAddStock.FlatStyle = FlatStyle.Flat;
+            btnAddStock.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAddStock.ForeColor = Color.Black;
+            btnAddStock.Location = new Point(193, 331);
+            btnAddStock.Name = "btnAddStock";
+            btnAddStock.Size = new Size(106, 27);
+            btnAddStock.TabIndex = 56;
+            btnAddStock.Text = "Add";
+            btnAddStock.TextColor = Color.Black;
+            btnAddStock.UseVisualStyleBackColor = false;
+            btnAddStock.Visible = false;
+            // 
             // ProductDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
+            Controls.Add(btnAddStock);
+            Controls.Add(pbBarcode);
+            Controls.Add(btnGenerate);
+            Controls.Add(tbProdCode);
             Controls.Add(btnAddProd);
             Controls.Add(label5);
-            Controls.Add(tbnUpdateProd);
+            Controls.Add(btnUpdateProd);
             Controls.Add(dgvInventoryHis);
             Controls.Add(btnUploadPic);
             Controls.Add(cbProdUnit);
             Controls.Add(label6);
             Controls.Add(tbProdStock);
             Controls.Add(label4);
-            Controls.Add(tbProdCode);
+            Controls.Add(tbProdID);
             Controls.Add(label3);
             Controls.Add(tbProdPrice);
             Controls.Add(label2);
@@ -333,6 +413,7 @@
             Text = "ProductDetails";
             ((System.ComponentModel.ISupportInitialize)pbProdPic).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventoryHis).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbBarcode).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -340,7 +421,6 @@
         #endregion
 
         private CustomControls.RJControls.RJButton btnSubmit;
-        private TextBox tbProdName;
         private CustomControls.RJControls.RJButton btnDeleteProd;
         private CustomControls.RJControls.RJButton btnAdd;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
@@ -350,16 +430,21 @@
         private Label label1;
         private TextBox tbProdPrice;
         private Label label2;
-        private TextBox tbProdCode;
+        private TextBox tbProdID;
         private Label label3;
         private TextBox tbProdStock;
         private Label label6;
         private ComboBox cbProdUnit;
         private CustomControls.RJControls.RJButton btnUploadPic;
         private DataGridView dgvInventoryHis;
-        private CustomControls.RJControls.RJButton tbnUpdateProd;
+        private CustomControls.RJControls.RJButton btnUpdateProd;
         private Label label4;
         private Label label5;
         private CustomControls.RJControls.RJButton btnAddProd;
+        private TextBox tbProdCode;
+        private CustomControls.RJControls.RJButton btnGenerate;
+        private PictureBox pbBarcode;
+        private CustomControls.RJControls.RJButton btnAddStock;
+        private TextBox tbProdName;
     }
 }

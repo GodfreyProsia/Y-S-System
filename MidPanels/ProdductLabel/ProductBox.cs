@@ -6,18 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Y_S_System.DetailPanels;
 
 namespace Y_S_System.MidPanels.ProdductLabel
 {
     public partial class ProductBox : UserControl
     {
         // Controls for the product box
+        public event EventHandler<string> ProductClicked;
         private PictureBox pictureBox;
         private Label nameLabel;
         private Label priceLabel;
         private Panel backgroundPanel;
-
-
+        private string _prodBarcode;
+        public string ProdBarcode
+        {
+            get { return _prodBarcode; }
+            set { _prodBarcode = value; }
+        }
         // Properties to set the product's image, name, and price
         [Category("Advance")]
         public string ProdName
@@ -56,7 +62,6 @@ namespace Y_S_System.MidPanels.ProdductLabel
             ProductPrice = productPrice;
             ProductImage = productImage;
         }
-
         private void InitializeCustomComponents()
         {
             pictureBox = new PictureBox
@@ -65,7 +70,6 @@ namespace Y_S_System.MidPanels.ProdductLabel
                 Dock = DockStyle.Top,
                 Size = new System.Drawing.Size(150, 150)
             };
-
 
             nameLabel = new Label
             {
@@ -83,15 +87,24 @@ namespace Y_S_System.MidPanels.ProdductLabel
 
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(110, 172, 218);
-
+            Cursor = Cursors.Hand;
             Controls.Add(nameLabel);
             Controls.Add(pictureBox);
             Controls.Add(priceLabel);
+
+            this.Click += ProductBox_Click;
+            pictureBox.Click += ProductBox_Click;
+            nameLabel.Click += ProductBox_Click;
+            priceLabel.Click += ProductBox_Click;
         }
-
-        private void InitializeComponent()
+        private void ProductBox_Click(object sender, EventArgs e)
         {
+            ProductDetails productDetails = Application.OpenForms["ProductDetails"] as ProductDetails;
 
+            if (productDetails != null)
+            {
+                productDetails.productLoad(_prodBarcode);
+            }
         }
     }
 }

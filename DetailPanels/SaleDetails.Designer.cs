@@ -42,6 +42,7 @@
             Price = new DataGridViewTextBoxColumn();
             label1 = new Label();
             lblOCode = new Label();
+            btnDeleteProd = new CustomControls.RJControls.RJButton();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSale).BeginInit();
             SuspendLayout();
@@ -202,12 +203,39 @@
             lblOCode.TabIndex = 37;
             lblOCode.Text = "Order Code";
             // 
+            // btnDeleteProd
+            // 
+            btnDeleteProd.Anchor = AnchorStyles.Bottom;
+            btnDeleteProd.BackColor = Color.FromArgb(110, 172, 218);
+            btnDeleteProd.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnDeleteProd.BorderColor = Color.Transparent;
+            btnDeleteProd.BorderColor1 = Color.Transparent;
+            btnDeleteProd.BorderColor2 = Color.Transparent;
+            btnDeleteProd.BorderRadius = 0;
+            btnDeleteProd.BorderRadius1 = 0;
+            btnDeleteProd.BorderRadius2 = 0;
+            btnDeleteProd.BorderSize = 0;
+            btnDeleteProd.BorderSize1 = 0;
+            btnDeleteProd.BorderSize2 = 0;
+            btnDeleteProd.FlatAppearance.BorderSize = 0;
+            btnDeleteProd.FlatStyle = FlatStyle.Flat;
+            btnDeleteProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnDeleteProd.ForeColor = Color.Black;
+            btnDeleteProd.Location = new Point(272, 618);
+            btnDeleteProd.Name = "btnDeleteProd";
+            btnDeleteProd.Size = new Size(106, 27);
+            btnDeleteProd.TabIndex = 38;
+            btnDeleteProd.Text = "Delete";
+            btnDeleteProd.TextColor = Color.Black;
+            btnDeleteProd.UseVisualStyleBackColor = false;
+            // 
             // SaleDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
+            Controls.Add(btnDeleteProd);
             Controls.Add(lblOCode);
             Controls.Add(lblChange);
             Controls.Add(lblBarcode);
@@ -244,5 +272,6 @@
         private DataGridViewTextBoxColumn Price;
         private Label label1;
         private Label lblOCode;
+        private CustomControls.RJControls.RJButton btnDeleteProd;
     }
 }

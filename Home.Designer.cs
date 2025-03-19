@@ -218,7 +218,6 @@
             MidPanel.Name = "MidPanel";
             MidPanel.Size = new Size(669, 681);
             MidPanel.TabIndex = 2;
-            MidPanel.Paint += MidPanel_Paint;
             // 
             // Home
             // 
