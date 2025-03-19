@@ -15,7 +15,7 @@ namespace Y_S_System.MidPanels
 {
     public partial class ProductView : Form
     {
-        string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
+        //string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
         public static ProductDetails instance;
         public int _mode;
         ProductBox productBox = new ProductBox();
@@ -27,44 +27,15 @@ namespace Y_S_System.MidPanels
         }
         public void LoadProduct()
         {
-            int i = 0;
-            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
-            MySqlConnection conn = new MySqlConnection(connstring);
-
-            using (MySqlCommand cmd = new MySqlCommand(loadProduct, conn))
+            ProductBox[] productBox = new ProductBox[50];
+            for (int i = 0; i < 50; i++)
             {
-                conn.Open();
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        ProductBox productBox = new ProductBox();
-                        productBox.ProdName = reader["ProductName"].ToString();
-                        productBox.ProductPrice = reader["ProductPrice"].ToString();
-                        productBox.ProdBarcode = reader["ProductBarcode"].ToString();
-                        if (reader["ProductPic"] != DBNull.Value)
-                        {
-                            byte[] pictureData = (byte[])reader["ProductPic"];
-                            if (pictureData.Length > 0)
-                            {
-                                try
-                                {
-                                    using (MemoryStream ms = new MemoryStream(pictureData))
-                                    {
-                                        ms.Position = 0;
-                                        productBox.ProductImage = Image.FromStream(ms);
-                                    }
-                                }
-                                catch (ArgumentException ex)
-                                {
-                                    productBox.ProductImage = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
-                                }
-                            }
-                        }
-                        productPanel.Controls.Add(productBox);
-                    }
-                }
-                conn.Close();
+                productBox[i] = new ProductBox();
+                productBox[i].ProdName = "TEMP PRODUCT";
+                productBox[i].ProductPrice = "Php 100.00 Per Meter";
+                productBox[i].ProdBarcode = "123455123";
+                productBox[i].ProductImage = Properties.Resources.Y_S_Logo;
+                productPanel.Controls.Add(productBox[i]);
             }
         }
 

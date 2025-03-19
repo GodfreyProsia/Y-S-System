@@ -41,6 +41,7 @@
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvInventory.GridColor = Color.FromArgb(2, 21, 38);
             dgvInventory.Location = new Point(12, 57);
+            dgvInventory.MultiSelect = false;
             dgvInventory.Name = "dgvInventory";
             dgvInventory.Size = new Size(645, 608);
             dgvInventory.TabIndex = 17;

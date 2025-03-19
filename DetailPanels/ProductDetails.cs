@@ -26,7 +26,7 @@ namespace Y_S_System.DetailPanels
         string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
         public string _role;
         public int _mode;
-        public void productLoad(string ProductBarcode)
+        /*public void productLoad(string ProductBarcode)
         {
             string prodLoad = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`ProductBarcode` = @ProductBarcode)";
             MySqlConnection conn = new MySqlConnection(connstring);
@@ -64,7 +64,8 @@ namespace Y_S_System.DetailPanels
                     }
                 }
             }
-        }
+        }*/
+
         public ProductDetails(string role, int mode)
         {
             InitializeComponent();
@@ -124,59 +125,7 @@ namespace Y_S_System.DetailPanels
             }
             else
             {
-                bool[] allGood = { false, false };
-                string[] checkType = {"ID", "Name"};
-                TextBox[] checkTextBox = { tbProdID, tbProdName };
-                for (int i = 0; i < 2; i++)
-                {
-                    string checkProd = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`Product" + checkType[i]+"` = @Product";
-                    MySqlConnection conn = new MySqlConnection(connstring);
-                    using (MySqlCommand cmd = new MySqlCommand(checkProd, conn))
-                    {
-                        conn.Open();
-                        cmd.Parameters.AddWithValue("@Product", checkTextBox[i].Text);
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                MessageBox.Show("Product "+checkType[i]+" exists.");
-                            }
-                            else
-                            {
-                                allGood[i] = true;
-                            }
-                        }
-                        conn.Close();
-                    }
-                }
-                if(allGood[0] == true && allGood[1] == true)
-                {
-                    goodToGo = true;
-                }
-            }
-            if(goodToGo == true)
-            {
-                string addProd = "INSERT INTO `yarnstitchdata`.`products` " +
-                   "(`ProductID`, `ProductName`, `ProductPrice`, `ProductUnit`, `ProductBarcode`, `ProductStock`, `ProductDate`, `ProductPic`, `ProductBarcodePic`) " +
-                   "VALUES (@ProductID, @ProductName, @ProductPrice, @ProductUnit, @ProductBarcode, @ProductStock, @ProductDate, @ProductPic, @ProductBarcodePic)";
-                MySqlConnection conn = new MySqlConnection(connstring);
-                byte[] prodPicBytes = File.ReadAllBytes(prodPicPath);
-                byte[] barcodpicBytes = File.ReadAllBytes(barcodePicPath);
-                using (MySqlCommand cmd = new MySqlCommand(addProd, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
-                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
-                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
-                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
-                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-                    cmd.Parameters.AddWithValue("@ProductStock", productStock);
-                    cmd.Parameters.AddWithValue("@ProductDate", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@ProductPic", prodPicBytes);
-                    cmd.Parameters.AddWithValue("@ProductBarcodePic", barcodpicBytes);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
+                
             }
         }
 

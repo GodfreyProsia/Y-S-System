@@ -99,12 +99,6 @@ namespace Y_S_System.MidPanels.ProdductLabel
         }
         private void ProductBox_Click(object sender, EventArgs e)
         {
-            ProductDetails productDetails = Application.OpenForms["ProductDetails"] as ProductDetails;
-
-            if (productDetails != null)
-            {
-                productDetails.productLoad(_prodBarcode);
-            }
         }
     }
 }
