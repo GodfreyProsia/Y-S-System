@@ -33,48 +33,48 @@ namespace Y_S_System
         }
         public void loadRpanel(object Form) //loads the right panel
         {
-            if (this.RightPanel.Controls.Count > 0)
+            if (RightPanel.Controls.Count > 0)
             {
-                Form previousForm = this.RightPanel.Controls[0] as Form;
+                Form previousForm = RightPanel.Controls[0] as Form;
                 if (previousForm != null)
                 {
                     previousForm.Close();
                     previousForm.Dispose();
                 }
             }
-            if (this.MidPanel.Controls.Count > 0)
+            if (MidPanel.Controls.Count > 0)
             {
-                this.MidPanel.Controls.RemoveAt(0);
+                MidPanel.Controls.RemoveAt(0);
             }
 
             Form f = Form as Form;
             f.TopLevel = false;
             f.Dock = DockStyle.Fill;
-            this.RightPanel.Controls.Add(f);
-            this.RightPanel.Tag = f;
+            RightPanel.Controls.Add(f);
+            RightPanel.Tag = f;
             f.Show();
         }
         public void loadMpanel(object Form)//loads the middle panel
         {
-            if (this.MidPanel.Controls.Count > 0)
+            if (MidPanel.Controls.Count > 0)
             {
-                Form previousForm = this.MidPanel.Controls[0] as Form;
+                Form previousForm = MidPanel.Controls[0] as Form;
                 if (previousForm != null)
                 {
                     previousForm.Close();
                     previousForm.Dispose();
                 }
             }
-            if (this.MidPanel.Controls.Count > 0)
+            if (MidPanel.Controls.Count > 0)
             {
-                this.MidPanel.Controls.RemoveAt(0);
+                MidPanel.Controls.RemoveAt(0);
             }
 
             Form f = Form as Form;
             f.TopLevel = false;
             f.Dock = DockStyle.Fill;
-            this.MidPanel.Controls.Add(f);
-            this.MidPanel.Tag = f;
+            MidPanel.Controls.Add(f);
+            MidPanel.Tag = f;
             f.Show();
         }
         public void tabChange(RJButton button)//changes the color of the button when clicked
@@ -112,7 +112,7 @@ namespace Y_S_System
         }
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            loadRpanel(new ProductDetails(_role, 0));
+            loadRpanel(new ProductDetails(_role, 2));
             loadMpanel(new ProductView(1));
             tabChange(btnProducts);
         }

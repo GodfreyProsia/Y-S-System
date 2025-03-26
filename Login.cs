@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.DataFormats;
 using MySql.Data.MySqlClient;
+using BCrypt.Net;
 
 namespace Y_S_System
 {
@@ -23,6 +24,22 @@ namespace Y_S_System
         {
             InitializeComponent();
             _main = main;
+            //set password(); Erase this later
+            string password = "123456";
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            using (MySqlConnection conn = new MySqlConnection(connstring))
+            {
+                conn.Open();
+                string query = "UPDATE `yarnstitchdata`.`accounts` SET Password = @password WHERE ID = @id";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@password", hashedPassword);
+                    cmd.Parameters.AddWithValue("@id", 2);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -39,7 +56,8 @@ namespace Y_S_System
                     if (reader.Read())
                     {
                         string pass = reader["Password"].ToString();
-                        if (pass == tbPassword.Text)
+                        bool isValid = BCrypt.Net.BCrypt.Verify(tbPassword.Text, pass);
+                        if (isValid == true)
                         {
                             role = reader["Role"].ToString();
                             logkey = Convert.ToInt32(reader["ID"]);

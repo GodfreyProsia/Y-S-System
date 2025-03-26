@@ -255,6 +255,7 @@
             btnUpdateProd.Text = "Update";
             btnUpdateProd.TextColor = Color.Black;
             btnUpdateProd.UseVisualStyleBackColor = false;
+            btnUpdateProd.Click += btnUpdateProd_Click;
             // 
             // label4
             // 
@@ -377,6 +378,7 @@
             btnAddStock.TextColor = Color.Black;
             btnAddStock.UseVisualStyleBackColor = false;
             btnAddStock.Visible = false;
+            btnAddStock.Click += btnAddStock_Click;
             // 
             // ProductDetails
             // 
@@ -420,9 +422,7 @@
 
         #endregion
 
-        private CustomControls.RJControls.RJButton btnSubmit;
         private CustomControls.RJControls.RJButton btnDeleteProd;
-        private CustomControls.RJControls.RJButton btnAdd;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Label lblProdName;
         private PictureBox pbProdPic;

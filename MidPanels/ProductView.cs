@@ -16,7 +16,6 @@ namespace Y_S_System.MidPanels
     public partial class ProductView : Form
     {
         string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
-        public static ProductDetails instance;
         public int _mode;
         ProductBox productBox = new ProductBox();
         public ProductView(int mode)
@@ -27,7 +26,7 @@ namespace Y_S_System.MidPanels
         }
         public void LoadProduct()
         {
-            int i = 0;
+            productPanel.Controls.Clear();
             string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
             MySqlConnection conn = new MySqlConnection(connstring);
 
@@ -42,6 +41,7 @@ namespace Y_S_System.MidPanels
                         productBox.ProdName = reader["ProductName"].ToString();
                         productBox.ProductPrice = reader["ProductPrice"].ToString();
                         productBox.ProdBarcode = reader["ProductBarcode"].ToString();
+                        productBox.Stock = reader["ProductStock"].ToString();
                         if (reader["ProductPic"] != DBNull.Value)
                         {
                             byte[] pictureData = (byte[])reader["ProductPic"];
@@ -55,18 +55,18 @@ namespace Y_S_System.MidPanels
                                         productBox.ProductImage = Image.FromStream(ms);
                                     }
                                 }
-                                catch (ArgumentException ex)
+                                catch
                                 {
                                     productBox.ProductImage = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
                                 }
                             }
                         }
+                        productBox.colorChange();
                         productPanel.Controls.Add(productBox);
                     }
                 }
                 conn.Close();
             }
         }
-
     }
 }

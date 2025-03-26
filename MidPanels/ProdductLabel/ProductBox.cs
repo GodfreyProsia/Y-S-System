@@ -18,6 +18,7 @@ namespace Y_S_System.MidPanels.ProdductLabel
         private Label nameLabel;
         private Label priceLabel;
         private Panel backgroundPanel;
+        private Label stockLabel;
         private string _prodBarcode;
         public string ProdBarcode
         {
@@ -38,6 +39,13 @@ namespace Y_S_System.MidPanels.ProdductLabel
             set { priceLabel.Text = value; }
         }
         [Category("Advance")]
+        public string Stock
+        {
+            get { return stockLabel.Text; }
+            set { stockLabel.Text = value; }
+        }
+
+        [Category("Advance")]
         public Image ProductImage
         {
             get { return pictureBox.Image; }
@@ -45,57 +53,104 @@ namespace Y_S_System.MidPanels.ProdductLabel
         }
         public ProductBox()
         {
-            InitializeCustomComponents();
-
-            // Set default values for properties
-            this.Size = new System.Drawing.Size(150, 200);
-            ProdName = "Product Name";
-            ProductPrice = "Php 0.00";
-            ProductImage = Properties.Resources.Y_S_Logo; // Assuming you have a default image in your resources
+            InitializeComponent();
         }
-        public ProductBox(string productName, string productPrice, Image productImage)
+
+        private void InitializeComponent()
         {
-            InitializeCustomComponents();
-
-            // Set the properties using the constructor parameters
-            ProdName = productName;
-            ProductPrice = productPrice;
-            ProductImage = productImage;
-        }
-        private void InitializeCustomComponents()
-        {
-            pictureBox = new PictureBox
-            {
-                SizeMode = PictureBoxSizeMode.Zoom,
-                Dock = DockStyle.Top,
-                Size = new System.Drawing.Size(150, 150)
-            };
-
-            nameLabel = new Label
-            {
-                TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Top,
-                Font = new System.Drawing.Font("Roboto", 12, System.Drawing.FontStyle.Bold)
-            };
-
-            priceLabel = new Label
-            {
-                TextAlign = System.Drawing.ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Bottom,
-                Font = new System.Drawing.Font("Roboto", 10, System.Drawing.FontStyle.Regular)
-            };
-
+            pictureBox = new PictureBox();
+            nameLabel = new Label();
+            priceLabel = new Label();
+            stockLabel = new Label();
+            ((ISupportInitialize)pictureBox).BeginInit();
+            SuspendLayout();
+            // 
+            // pictureBox
+            // 
+            pictureBox.Anchor = AnchorStyles.Top;
+            pictureBox.Image = Properties.Resources.TempProdPic;
+            pictureBox.Location = new Point(5, 5);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(150, 150);
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox.TabIndex = 1;
+            pictureBox.TabStop = false;
+            pictureBox.Click += ProductBox_Click;
+            // 
+            // nameLabel
+            // 
+            nameLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            nameLabel.Location = new Point(5, 159);
+            nameLabel.Name = "nameLabel";
+            nameLabel.Size = new Size(150, 42);
+            nameLabel.TabIndex = 0;
+            nameLabel.Text = "ProductNameeeeeeeeeeeeee";
+            nameLabel.TextAlign = ContentAlignment.MiddleCenter;
+            nameLabel.Click += ProductBox_Click;
+            // 
+            // priceLabel
+            // 
+            priceLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            priceLabel.Location = new Point(27, 201);
+            priceLabel.Name = "priceLabel";
+            priceLabel.Size = new Size(100, 23);
+            priceLabel.TabIndex = 2;
+            priceLabel.Text = "Price";
+            priceLabel.TextAlign = ContentAlignment.TopCenter;
+            priceLabel.Click += ProductBox_Click;
+            // 
+            // stockLabel
+            // 
+            stockLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            stockLabel.Location = new Point(51, 224);
+            stockLabel.Name = "stockLabel";
+            stockLabel.Size = new Size(54, 18);
+            stockLabel.TabIndex = 3;
+            stockLabel.Text = "0";
+            stockLabel.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // ProductBox
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(110, 172, 218);
-            Cursor = Cursors.Hand;
+            Controls.Add(stockLabel);
             Controls.Add(nameLabel);
             Controls.Add(pictureBox);
             Controls.Add(priceLabel);
+            Cursor = Cursors.Hand;
+            Name = "ProductBox";
+            Size = new Size(160, 252);
+            Click += ProductBox_Click;
+            ((ISupportInitialize)pictureBox).EndInit();
+            ResumeLayout(false);
+        }
 
-            this.Click += ProductBox_Click;
-            pictureBox.Click += ProductBox_Click;
-            nameLabel.Click += ProductBox_Click;
-            priceLabel.Click += ProductBox_Click;
+        public void colorChange()
+        {
+            double stock;
+            if (double.TryParse(stockLabel.Text, out stock))
+            {
+                if (stock <= 10)
+                {
+                    int intStock = (int)stock;
+                    int minStock = 0;
+                    int maxStock = 10;
+
+                    int clampedStock = Math.Max(minStock, Math.Min(intStock, maxStock));
+
+                    Color startColor = Color.FromArgb(110, 172, 218);
+                    Color endColor = Color.FromArgb(208, 72, 72);
+
+                    float factor = 1 - ((float)clampedStock / maxStock);
+
+                    int r = (int)(startColor.R + factor * (endColor.R - startColor.R));
+                    int g = (int)(startColor.G + factor * (endColor.G - startColor.G));
+                    int b = (int)(startColor.B + factor * (endColor.B - startColor.B));
+
+                    BackColor = Color.FromArgb(r, g, b);
+                }
+            }
         }
         private void ProductBox_Click(object sender, EventArgs e)
         {
