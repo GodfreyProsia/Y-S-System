@@ -48,10 +48,6 @@
             btnSubmit = new CustomControls.RJControls.RJButton();
             tbChange = new TextBox();
             label5 = new Label();
-            Barcode = new DataGridViewTextBoxColumn();
-            Product = new DataGridViewTextBoxColumn();
-            Amount = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             SuspendLayout();
@@ -70,10 +66,9 @@
             // dgvOrders
             // 
             dgvOrders.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            dgvOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvOrders.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvOrders.Columns.AddRange(new DataGridViewColumn[] { Barcode, Product, Amount, Price });
             dgvOrders.GridColor = Color.FromArgb(2, 21, 38);
             dgvOrders.Location = new Point(12, 272);
             dgvOrders.MultiSelect = false;
@@ -81,7 +76,7 @@
             dgvOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvOrders.Size = new Size(367, 262);
             dgvOrders.TabIndex = 3;
-            dgvOrders.SelectionChanged += dgvOrders_SelectionChanged;
+            dgvOrders.CellClick += dgvOrders_CellClick;
             // 
             // pbProdPic
             // 
@@ -283,6 +278,7 @@
             btnSubmit.Text = "Submit";
             btnSubmit.TextColor = Color.Black;
             btnSubmit.UseVisualStyleBackColor = false;
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // tbChange
             // 
@@ -304,26 +300,6 @@
             label5.Size = new Size(63, 19);
             label5.TabIndex = 18;
             label5.Text = "Change";
-            // 
-            // Barcode
-            // 
-            Barcode.HeaderText = "Barcode";
-            Barcode.Name = "Barcode";
-            // 
-            // Product
-            // 
-            Product.HeaderText = "Product";
-            Product.Name = "Product";
-            // 
-            // Amount
-            // 
-            Amount.HeaderText = "Amount";
-            Amount.Name = "Amount";
-            // 
-            // Price
-            // 
-            Price.HeaderText = "Price";
-            Price.Name = "Price";
             // 
             // OrderDetails
             // 
@@ -380,9 +356,5 @@
         private CustomControls.RJControls.RJButton btnSubmit;
         private TextBox tbChange;
         private Label label5;
-        private DataGridViewTextBoxColumn Barcode;
-        private DataGridViewTextBoxColumn Product;
-        private DataGridViewTextBoxColumn Amount;
-        private DataGridViewTextBoxColumn Price;
     }
 }

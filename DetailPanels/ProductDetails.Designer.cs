@@ -52,6 +52,7 @@
             btnGenerate = new CustomControls.RJControls.RJButton();
             pbBarcode = new PictureBox();
             btnAddStock = new CustomControls.RJControls.RJButton();
+            btnClear = new CustomControls.RJControls.RJButton();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventoryHis).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbBarcode).BeginInit();
@@ -354,7 +355,6 @@
             // 
             // btnAddStock
             // 
-            btnAddStock.Anchor = AnchorStyles.Bottom;
             btnAddStock.BackColor = Color.FromArgb(110, 172, 218);
             btnAddStock.BackgroundColor = Color.FromArgb(110, 172, 218);
             btnAddStock.BorderColor = Color.Transparent;
@@ -374,11 +374,38 @@
             btnAddStock.Name = "btnAddStock";
             btnAddStock.Size = new Size(106, 27);
             btnAddStock.TabIndex = 56;
-            btnAddStock.Text = "Add";
+            btnAddStock.Text = "Update";
             btnAddStock.TextColor = Color.Black;
             btnAddStock.UseVisualStyleBackColor = false;
             btnAddStock.Visible = false;
             btnAddStock.Click += btnAddStock_Click;
+            // 
+            // btnClear
+            // 
+            btnClear.Anchor = AnchorStyles.Bottom;
+            btnClear.BackColor = Color.FromArgb(110, 172, 218);
+            btnClear.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnClear.BorderColor = Color.Transparent;
+            btnClear.BorderColor1 = Color.Transparent;
+            btnClear.BorderColor2 = Color.Transparent;
+            btnClear.BorderRadius = 0;
+            btnClear.BorderRadius1 = 0;
+            btnClear.BorderRadius2 = 0;
+            btnClear.BorderSize = 0;
+            btnClear.BorderSize1 = 0;
+            btnClear.BorderSize2 = 0;
+            btnClear.FlatAppearance.BorderSize = 0;
+            btnClear.FlatStyle = FlatStyle.Flat;
+            btnClear.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnClear.ForeColor = Color.Black;
+            btnClear.Location = new Point(12, 619);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(106, 27);
+            btnClear.TabIndex = 57;
+            btnClear.Text = "Clear";
+            btnClear.TextColor = Color.Black;
+            btnClear.UseVisualStyleBackColor = false;
+            btnClear.Click += btnClear_Click;
             // 
             // ProductDetails
             // 
@@ -386,6 +413,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
+            Controls.Add(btnClear);
             Controls.Add(btnAddStock);
             Controls.Add(pbBarcode);
             Controls.Add(btnGenerate);
@@ -446,5 +474,6 @@
         private PictureBox pbBarcode;
         private CustomControls.RJControls.RJButton btnAddStock;
         private TextBox tbProdName;
+        private CustomControls.RJControls.RJButton btnClear;
     }
 }

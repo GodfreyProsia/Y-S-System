@@ -39,7 +39,7 @@ namespace Y_S_System.MidPanels
                     {
                         ProductBox productBox = new ProductBox();
                         productBox.ProdName = reader["ProductName"].ToString();
-                        productBox.ProductPrice = reader["ProductPrice"].ToString();
+                        productBox.ProductPrice = "Php "+ reader["ProductPrice"].ToString();
                         productBox.ProdBarcode = reader["ProductBarcode"].ToString();
                         productBox.Stock = reader["ProductStock"].ToString();
                         if (reader["ProductPic"] != DBNull.Value)
