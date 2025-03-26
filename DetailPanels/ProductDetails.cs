@@ -56,7 +56,7 @@ namespace Y_S_System.DetailPanels
             pbBarcode.Image = null;
             dgvInventoryHis.DataSource = null;
         }
-        public void productLoad(string ProductBarcode)
+        public void LoadProduct(string ProductBarcode)
         {
             tbProdCode.Text = ProductBarcode;
             string prodLoad = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`ProductBarcode` = @ProductBarcode)";
@@ -483,5 +483,7 @@ namespace Y_S_System.DetailPanels
                 refresh();
             }
         }
+
+        //Delete Button with confirmation()
     }
 }

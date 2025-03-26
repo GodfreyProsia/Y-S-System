@@ -30,14 +30,11 @@
         {
             label1 = new Label();
             dgvOrders = new DataGridView();
-            Product = new DataGridViewTextBoxColumn();
-            Amount = new DataGridViewTextBoxColumn();
-            Price = new DataGridViewTextBoxColumn();
             pbProdPic = new PictureBox();
             lblProdName = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             lblPrice = new Label();
-            tbtAmount = new TextBox();
+            tbAmount = new TextBox();
             backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             label2 = new Label();
             btnAdd = new CustomControls.RJControls.RJButton();
@@ -51,6 +48,10 @@
             btnSubmit = new CustomControls.RJControls.RJButton();
             tbChange = new TextBox();
             label5 = new Label();
+            Barcode = new DataGridViewTextBoxColumn();
+            Product = new DataGridViewTextBoxColumn();
+            Amount = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             SuspendLayout();
@@ -72,27 +73,15 @@
             dgvOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvOrders.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvOrders.Columns.AddRange(new DataGridViewColumn[] { Product, Amount, Price });
+            dgvOrders.Columns.AddRange(new DataGridViewColumn[] { Barcode, Product, Amount, Price });
             dgvOrders.GridColor = Color.FromArgb(2, 21, 38);
             dgvOrders.Location = new Point(12, 272);
+            dgvOrders.MultiSelect = false;
             dgvOrders.Name = "dgvOrders";
+            dgvOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvOrders.Size = new Size(367, 262);
             dgvOrders.TabIndex = 3;
-            // 
-            // Product
-            // 
-            Product.HeaderText = "Product";
-            Product.Name = "Product";
-            // 
-            // Amount
-            // 
-            Amount.HeaderText = "Amount";
-            Amount.Name = "Amount";
-            // 
-            // Price
-            // 
-            Price.HeaderText = "Price";
-            Price.Name = "Price";
+            dgvOrders.SelectionChanged += dgvOrders_SelectionChanged;
             // 
             // pbProdPic
             // 
@@ -129,13 +118,14 @@
             lblPrice.TabIndex = 6;
             lblPrice.Text = "Price";
             // 
-            // tbtAmount
+            // tbAmount
             // 
-            tbtAmount.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbtAmount.Location = new Point(246, 162);
-            tbtAmount.Name = "tbtAmount";
-            tbtAmount.Size = new Size(131, 27);
-            tbtAmount.TabIndex = 7;
+            tbAmount.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbAmount.Location = new Point(246, 162);
+            tbAmount.Name = "tbAmount";
+            tbAmount.Size = new Size(131, 27);
+            tbAmount.TabIndex = 7;
+            tbAmount.KeyPress += tbAmount_KeyPress;
             // 
             // label2
             // 
@@ -174,6 +164,7 @@
             btnAdd.Text = "Add";
             btnAdd.TextColor = Color.Black;
             btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnDelete
             // 
@@ -200,6 +191,7 @@
             btnDelete.Text = "Delete";
             btnDelete.TextColor = Color.Black;
             btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btnDelete_Click;
             // 
             // lblTotal
             // 
@@ -243,6 +235,7 @@
             tbCash.Name = "tbCash";
             tbCash.Size = new Size(100, 27);
             tbCash.TabIndex = 14;
+            tbCash.KeyPress += tbCash_KeyPress;
             // 
             // label4
             // 
@@ -263,6 +256,7 @@
             tbBarcode.Name = "tbBarcode";
             tbBarcode.Size = new Size(131, 27);
             tbBarcode.TabIndex = 15;
+            tbBarcode.KeyPress += tbBarcode_KeyPress;
             // 
             // btnSubmit
             // 
@@ -311,6 +305,26 @@
             label5.TabIndex = 18;
             label5.Text = "Change";
             // 
+            // Barcode
+            // 
+            Barcode.HeaderText = "Barcode";
+            Barcode.Name = "Barcode";
+            // 
+            // Product
+            // 
+            Product.HeaderText = "Product";
+            Product.Name = "Product";
+            // 
+            // Amount
+            // 
+            Amount.HeaderText = "Amount";
+            Amount.Name = "Amount";
+            // 
+            // Price
+            // 
+            Price.HeaderText = "Price";
+            Price.Name = "Price";
+            // 
             // OrderDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -329,7 +343,7 @@
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
             Controls.Add(label2);
-            Controls.Add(tbtAmount);
+            Controls.Add(tbAmount);
             Controls.Add(lblPrice);
             Controls.Add(lblProdName);
             Controls.Add(pbProdPic);
@@ -348,14 +362,11 @@
 
         private Label label1;
         private DataGridView dgvOrders;
-        private DataGridViewTextBoxColumn Product;
-        private DataGridViewTextBoxColumn Amount;
-        private DataGridViewTextBoxColumn Price;
         private PictureBox pbProdPic;
         private Label lblProdName;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Label lblPrice;
-        private TextBox tbtAmount;
+        private TextBox tbAmount;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private Label label2;
         private CustomControls.RJControls.RJButton btnAdd;
@@ -369,5 +380,9 @@
         private CustomControls.RJControls.RJButton btnSubmit;
         private TextBox tbChange;
         private Label label5;
+        private DataGridViewTextBoxColumn Barcode;
+        private DataGridViewTextBoxColumn Product;
+        private DataGridViewTextBoxColumn Amount;
+        private DataGridViewTextBoxColumn Price;
     }
 }

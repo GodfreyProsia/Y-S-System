@@ -154,11 +154,14 @@ namespace Y_S_System.MidPanels.ProdductLabel
         }
         private void ProductBox_Click(object sender, EventArgs e)
         {
-            ProductDetails productDetails = Application.OpenForms["ProductDetails"] as ProductDetails;
-
-            if (productDetails != null)
+            foreach (var productDetails in Application.OpenForms.OfType<ProductDetails>())
             {
-                productDetails.productLoad(_prodBarcode);
+                productDetails.LoadProduct(_prodBarcode);
+            }
+
+            foreach (var orderDetails in Application.OpenForms.OfType<OrderDetails>())
+            {
+                orderDetails.LoadProduct(_prodBarcode);
             }
         }
     }
