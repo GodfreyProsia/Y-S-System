@@ -60,6 +60,7 @@
             tbtSearch.Name = "tbtSearch";
             tbtSearch.Size = new Size(197, 27);
             tbtSearch.TabIndex = 9;
+            tbtSearch.TextChanged += tbtSearch_TextChanged;
             // 
             // ProductView
             // 

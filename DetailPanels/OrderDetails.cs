@@ -25,6 +25,172 @@ namespace Y_S_System.DetailPanels
             Total();
             btnAdd.Visible = false;
         }
+        
+        private void tbBarcode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                if (!string.IsNullOrWhiteSpace(tbBarcode.Text))
+                {
+                    LoadProduct(tbBarcode.Text);
+                }
+            }
+        }//Enter Key for Barcode
+        private void tbAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                if (!string.IsNullOrWhiteSpace(tbBarcode.Text))
+                {
+                    if (double.TryParse(tbAmount.Text, out _amount))
+                    {
+                        tempSales("add", tbBarcode.Text);
+                        clearFields();
+                        LoadOrderList();
+                    }
+                    else { MessageBox.Show("Please enter a valid amount"); }
+                }
+            }
+        }//Enter Key for Amount
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(tbBarcode.Text) && !string.IsNullOrWhiteSpace(tbAmount.Text))
+            {
+                if (double.TryParse(tbAmount.Text, out _amount))
+                {
+                    tempSales("add", tbBarcode.Text);
+                    clearFields();
+                    LoadOrderList();
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid amount");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No product to add");
+            }
+        }//Add Button
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvOrders.CurrentRow != null)
+            {
+                tempSales("delete", tbBarcode.Text);
+                clearFields();
+            }
+            else
+            {
+                MessageBox.Show("No selected row");
+            }
+            LoadOrderList();
+        }//Delete Button
+        private void tbCash_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                if (!string.IsNullOrWhiteSpace(tbCash.Text))
+                {
+                    try
+                    {
+                        double cash;
+                        double.TryParse(tbCash.Text, out cash);
+                        tbChange.Text = (cash - _Total).ToString();
+                    }
+                    catch { MessageBox.Show("Please enter a valid amount"); }
+                }
+            }
+        }//Enter Key for Cash
+        private void dgvOrders_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvOrders.CurrentRow != null && dgvOrders.Columns.Contains("ProductBarcode"))
+            {
+                string ProductBarcode = dgvOrders.CurrentRow.Cells["ProductBarcode"].Value?.ToString();
+                LoadProductFromDGV(ProductBarcode);
+            }
+        }//Load Product from DGV
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            SubmitOrder();
+        }//Submit Button
+        public void SubmitOrder()
+        {
+            if (!string.IsNullOrWhiteSpace(tbCash.Text) && !string.IsNullOrWhiteSpace(tbChange.Text))
+            {
+                Random random = new Random();
+                long randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
+                while (checkOrderID(randomNumber.ToString()) == false)
+                {
+                    randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
+                }
+                string OrderID = randomNumber.ToString();
+
+                string date = DateTime.Now.ToString("yyyy-MM-dd");
+                double cash, change;
+                double.TryParse(tbCash.Text, out cash);
+                double.TryParse(tbChange.Text, out change);
+
+                string addOrder = "INSERT INTO `yarnstitchdata`.`sales` " +
+                    "(`OrderID` ,`Date`, `Cash`, `Change`, `Total`) " +
+                    "VALUES (@OrderID, @Date, @Cash, @Change, @Total)";
+                MySqlConnection conn = new MySqlConnection(connstring);
+                using (MySqlCommand cmd = new MySqlCommand(addOrder, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@OrderID", OrderID);
+                    cmd.Parameters.AddWithValue("@Date", date);
+                    cmd.Parameters.AddWithValue("@Cash", cash);
+                    cmd.Parameters.AddWithValue("@Change", change);
+                    cmd.Parameters.AddWithValue("@Total", _Total);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+                string addSales = "INSERT INTO `yarnstitchdata`.`salesdetails` " +
+                    "(`OrderID`, `ProductBarcode`, `ProductName`, `Amount`, `ProductPrice`, `ProductUnit`, `Total`) " +
+                    "VALUES (@OrderID, @ProductBarcode, @ProductName, @Amount, @ProductPrice, @ProductUnit, @Total)";
+
+                conn.Open();
+
+                foreach (DataGridViewRow row in dgvOrders.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    using (MySqlCommand cmd = new MySqlCommand(addSales, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@OrderID", OrderID);
+                        cmd.Parameters.AddWithValue("@ProductBarcode", Convert.ToString(row.Cells["ProductBarcode"].Value) ?? "");
+                        cmd.Parameters.AddWithValue("@ProductName", Convert.ToString(row.Cells["ProductName"].Value) ?? "");
+                        cmd.Parameters.AddWithValue("@Amount", Convert.ToString(row.Cells["ProductAmount"].Value) ?? "");
+                        cmd.Parameters.AddWithValue("@ProductPrice", Convert.ToString(row.Cells["ProductPrice"].Value) ?? "");
+                        cmd.Parameters.AddWithValue("@ProductUnit", Convert.ToString(row.Cells["ProductUnit"].Value) ?? "");
+                        cmd.Parameters.AddWithValue("@Total", Convert.ToString(row.Cells["ProductTotal"].Value) ?? "");
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                conn.Close();
+
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("TRUNCATE TABLE `yarnstitchdata`.`tempsales`", conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+
+                clearFields();
+                LoadOrderList();
+                tbCash.Text = "";
+                tbChange.Text = "";
+                tbTotal.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("Please enter cash and change");
+            }
+        }//Submit Order to Database
         public void LoadProduct(string ProductBarcode)
         {
             tbAmount.Text = "1";
@@ -67,55 +233,7 @@ namespace Y_S_System.DetailPanels
                 btnAdd.Visible = true;
                 btnAdd.Text = "Add";
             }
-        }
-        private void tbBarcode_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-                if (!string.IsNullOrWhiteSpace(tbBarcode.Text))
-                {
-                    LoadProduct(tbBarcode.Text);
-                }
-            }
-        }
-        private void tbAmount_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-                if (!string.IsNullOrWhiteSpace(tbBarcode.Text))
-                {
-                    if (double.TryParse(tbAmount.Text, out _amount))
-                    {
-                        tempSales("add", tbBarcode.Text);
-                        clearFields();
-                        LoadOrderList();
-                    }
-                    else { MessageBox.Show("Please enter a valid amount"); }
-                }
-            }
-        }
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(tbBarcode.Text) && !string.IsNullOrWhiteSpace(tbAmount.Text))
-            {
-                if (double.TryParse(tbAmount.Text, out _amount))
-                {
-                    tempSales("add", tbBarcode.Text);
-                    clearFields();
-                    LoadOrderList();
-                }
-                else
-                {
-                    MessageBox.Show("Please enter a valid amount");
-                }
-            }
-            else
-            {
-                MessageBox.Show("No product to add");
-            }
-        }
+        }//Load Product from Database
         public void tempSales(string mode, string ProductBarcode)
         {
             if (!string.IsNullOrWhiteSpace(tbBarcode.Text) && !string.IsNullOrWhiteSpace(tbAmount.Text))
@@ -149,7 +267,7 @@ namespace Y_S_System.DetailPanels
                                 {
                                     update.Parameters.AddWithValue("@ProductBarcode", ProductBarcode);
                                     update.Parameters.AddWithValue("@ProductTotal", _price * _amount);
-                                    update.Parameters.AddWithValue("@ProductAmount", _amount+pastAmount);
+                                    update.Parameters.AddWithValue("@ProductAmount", _amount + pastAmount);
                                     update.ExecuteNonQuery();
                                 }
                             }
@@ -204,37 +322,7 @@ namespace Y_S_System.DetailPanels
             {
                 MessageBox.Show("No product to add");
             }
-        }
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (dgvOrders.CurrentRow != null)
-            {
-                tempSales("delete", tbBarcode.Text);
-                clearFields();
-            }
-            else
-            {
-                MessageBox.Show("No selected row");
-            }
-            LoadOrderList();
-        }
-        private void tbCash_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-                if (!string.IsNullOrWhiteSpace(tbCash.Text))
-                {
-                    try
-                    {
-                        double cash;
-                        double.TryParse(tbCash.Text, out cash);
-                        tbChange.Text = (cash - _Total).ToString();
-                    }
-                    catch { MessageBox.Show("Please enter a valid amount"); }
-                }
-            }
-        }
+        }//Add, Update, Delete in TempSales
         public void LoadOrderList()
         {
             string loadOrders = "SELECT * FROM `yarnstitchdata`.`tempsales`";
@@ -257,7 +345,7 @@ namespace Y_S_System.DetailPanels
             dgvOrders.Columns["ProductUnit"].HeaderText = "Unit";
             dgvOrders.Columns["ProductTotal"].HeaderText = "Total";
 
-        }
+        }//Load Orders in DGV
         public void clearFields()
         {
             tbBarcode.Text = "";
@@ -266,16 +354,7 @@ namespace Y_S_System.DetailPanels
             lblPrice.Text = "Price";
             pbProdPic.Image = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
             btnAdd.Visible = false;
-        }
-
-        private void dgvOrders_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dgvOrders.CurrentRow != null && dgvOrders.Columns.Contains("ProductBarcode"))
-            {
-                string ProductBarcode = dgvOrders.CurrentRow.Cells["ProductBarcode"].Value?.ToString();
-                LoadProductFromDGV(ProductBarcode);
-            }
-        }
+        }//Clear Fields
         public void LoadProductFromDGV(string ProductBarcode)
         {
             tbBarcode.Text = ProductBarcode;
@@ -329,7 +408,7 @@ namespace Y_S_System.DetailPanels
                 btnAdd.Visible = true;
                 btnAdd.Text = "Update";
             }
-        }
+        }//Load Product from DGV
         public void Total()
         {
             string loadTotal = "SELECT SUM(`ProductTotal`) FROM `yarnstitchdata`.`tempsales`";
@@ -347,82 +426,7 @@ namespace Y_S_System.DetailPanels
                 }
                 conn.Close();
             }
-        }
-        private void btnSubmit_Click(object sender, EventArgs e)
-        {
-            if(!string.IsNullOrWhiteSpace(tbCash.Text)&&!string.IsNullOrWhiteSpace(tbChange.Text))
-            {
-                Random random = new Random();
-                long randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
-                while (checkOrderID(randomNumber.ToString()) == false)
-                {
-                    randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
-                }
-                string OrderID = randomNumber.ToString();
-                
-                string date = DateTime.Now.ToString("yyyy-MM-dd");
-                double cash, change;
-                double.TryParse(tbCash.Text, out cash);
-                double.TryParse(tbChange.Text, out change);
-
-                string addOrder = "INSERT INTO `yarnstitchdata`.`sales` " +
-                    "(`OrderID` ,`Date`, `Cash`, `Change`, `Total`) " +
-                    "VALUES (@OrderID, @Date, @Cash, @Change, @Total)";
-                MySqlConnection conn = new MySqlConnection(connstring);
-                using (MySqlCommand cmd = new MySqlCommand(addOrder, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@OrderID", OrderID);
-                    cmd.Parameters.AddWithValue("@Date", date);
-                    cmd.Parameters.AddWithValue("@Cash", cash);
-                    cmd.Parameters.AddWithValue("@Change", change);
-                    cmd.Parameters.AddWithValue("@Total", _Total);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-                string addSales = "INSERT INTO `yarnstitchdata`.`salesdetails` " +
-                    "(`OrderID`, `ProductBarcode`, `ProductName`, `Amount`, `ProductPrice`, `ProductUnit`, `Total`) " +
-                    "VALUES (@OrderID, @ProductBarcode, @ProductName, @Amount, @ProductPrice, @ProductUnit, @Total)";
-               
-                conn.Open(); 
-                
-                foreach (DataGridViewRow row in dgvOrders.Rows)
-                {
-                    if (row.IsNewRow) continue; 
-                
-                    using (MySqlCommand cmd = new MySqlCommand(addSales, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@OrderID", OrderID);
-                        cmd.Parameters.AddWithValue("@ProductBarcode", Convert.ToString(row.Cells["ProductBarcode"].Value) ?? "");
-                        cmd.Parameters.AddWithValue("@ProductName", Convert.ToString(row.Cells["ProductName"].Value) ?? "");
-                        cmd.Parameters.AddWithValue("@Amount", Convert.ToString(row.Cells["ProductAmount"].Value) ?? "");
-                        cmd.Parameters.AddWithValue("@ProductPrice", Convert.ToString(row.Cells["ProductPrice"].Value) ?? "");
-                        cmd.Parameters.AddWithValue("@ProductUnit", Convert.ToString(row.Cells["ProductUnit"].Value) ?? "");
-                        cmd.Parameters.AddWithValue("@Total", Convert.ToString(row.Cells["ProductTotal"].Value) ?? "");
-                
-                        cmd.ExecuteNonQuery(); 
-                    }
-                }
-                conn.Close();
-               
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("TRUNCATE TABLE `yarnstitchdata`.`tempsales`", conn))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
-
-                clearFields();
-                LoadOrderList();
-                tbCash.Text = "";
-                tbChange.Text = "";
-                tbTotal.Text = "";
-            }
-            else
-            {
-                MessageBox.Show("Please enter cash and change");
-            }
-        }
+        }//Calculate Total
         public bool checkOrderID(string RandomNum)
         {
             string checkOrderID = "SELECT * FROM `yarnstitchdata`.`sales` WHERE (`OrderID` = @OrderID)";
@@ -445,7 +449,7 @@ namespace Y_S_System.DetailPanels
                     }
                 }
             }
-        }
+        }//Check if OrderID exists
 
     }
 }

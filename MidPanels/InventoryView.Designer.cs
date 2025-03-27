@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             dgvInventory = new DataGridView();
+            ProductName = new DataGridViewTextBoxColumn();
+            Price = new DataGridViewTextBoxColumn();
+            Stock = new DataGridViewTextBoxColumn();
+            Barcode = new DataGridViewTextBoxColumn();
             label2 = new Label();
             tbtSearch = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
@@ -37,13 +41,37 @@
             // dgvInventory
             // 
             dgvInventory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvInventory.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvInventory.Columns.AddRange(new DataGridViewColumn[] { ProductName, Price, Stock, Barcode });
             dgvInventory.GridColor = Color.FromArgb(2, 21, 38);
             dgvInventory.Location = new Point(12, 57);
             dgvInventory.Name = "dgvInventory";
+            dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvInventory.Size = new Size(645, 608);
             dgvInventory.TabIndex = 17;
+            dgvInventory.CellClick += dgvInventory_CellClick;
+            // 
+            // ProductName
+            // 
+            ProductName.HeaderText = "Name";
+            ProductName.Name = "ProductName";
+            // 
+            // Price
+            // 
+            Price.HeaderText = "Price";
+            Price.Name = "Price";
+            // 
+            // Stock
+            // 
+            Stock.HeaderText = "Stock";
+            Stock.Name = "Stock";
+            // 
+            // Barcode
+            // 
+            Barcode.HeaderText = "Barcode";
+            Barcode.Name = "Barcode";
             // 
             // label2
             // 
@@ -63,6 +91,7 @@
             tbtSearch.Name = "tbtSearch";
             tbtSearch.Size = new Size(197, 27);
             tbtSearch.TabIndex = 15;
+            tbtSearch.TextChanged += tbtSearch_TextChanged;
             // 
             // InventoryView
             // 
@@ -86,5 +115,9 @@
         private DataGridView dgvInventory;
         private Label label2;
         private TextBox tbtSearch;
+        private DataGridViewTextBoxColumn ProductName;
+        private DataGridViewTextBoxColumn Price;
+        private DataGridViewTextBoxColumn Stock;
+        private DataGridViewTextBoxColumn Barcode;
     }
 }

@@ -21,52 +21,100 @@ namespace Y_S_System.MidPanels
         public ProductView(int mode)
         {
             InitializeComponent();
-            LoadProduct();
+            LoadProduct(null);
             _mode = mode;
         }
-        public void LoadProduct()
+        public void LoadProduct(string search)
         {
             productPanel.Controls.Clear();
             string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
+            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '%" + tbtSearch.Text + "%' OR `ProductBarcode` LIKE '%" + tbtSearch.Text + "%'";
             MySqlConnection conn = new MySqlConnection(connstring);
-
-            using (MySqlCommand cmd = new MySqlCommand(loadProduct, conn))
+            if (search == null)
             {
-                conn.Open();
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlCommand cmd = new MySqlCommand(loadProduct, conn))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        ProductBox productBox = new ProductBox();
-                        productBox.ProdName = reader["ProductName"].ToString();
-                        productBox.ProductPrice = "Php "+ reader["ProductPrice"].ToString();
-                        productBox.ProdBarcode = reader["ProductBarcode"].ToString();
-                        productBox.Stock = reader["ProductStock"].ToString();
-                        if (reader["ProductPic"] != DBNull.Value)
+                        while (reader.Read())
                         {
-                            byte[] pictureData = (byte[])reader["ProductPic"];
-                            if (pictureData.Length > 0)
+                            ProductBox productBox = new ProductBox();
+                            productBox.ProdName = reader["ProductName"].ToString();
+                            productBox.ProductPrice = "Php " + reader["ProductPrice"].ToString();
+                            productBox.ProdBarcode = reader["ProductBarcode"].ToString();
+                            productBox.Stock = reader["ProductStock"].ToString();
+                            if (reader["ProductPic"] != DBNull.Value)
                             {
-                                try
+                                byte[] pictureData = (byte[])reader["ProductPic"];
+                                if (pictureData.Length > 0)
                                 {
-                                    using (MemoryStream ms = new MemoryStream(pictureData))
+                                    try
                                     {
-                                        ms.Position = 0;
-                                        productBox.ProductImage = Image.FromStream(ms);
+                                        using (MemoryStream ms = new MemoryStream(pictureData))
+                                        {
+                                            ms.Position = 0;
+                                            productBox.ProductImage = Image.FromStream(ms);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        productBox.ProductImage = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
                                     }
                                 }
-                                catch
+                            }
+                            productBox.colorChange();
+                            productPanel.Controls.Add(productBox);
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            else
+            {
+                using (MySqlCommand cmd = new MySqlCommand(loadSearch, conn))
+                {
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ProductBox productBox = new ProductBox();
+                            productBox.ProdName = reader["ProductName"].ToString();
+                            productBox.ProductPrice = "Php " + reader["ProductPrice"].ToString();
+                            productBox.ProdBarcode = reader["ProductBarcode"].ToString();
+                            productBox.Stock = reader["ProductStock"].ToString();
+                            if (reader["ProductPic"] != DBNull.Value)
+                            {
+                                byte[] pictureData = (byte[])reader["ProductPic"];
+                                if (pictureData.Length > 0)
                                 {
-                                    productBox.ProductImage = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
+                                    try
+                                    {
+                                        using (MemoryStream ms = new MemoryStream(pictureData))
+                                        {
+                                            ms.Position = 0;
+                                            productBox.ProductImage = Image.FromStream(ms);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        productBox.ProductImage = Image.FromHbitmap(Properties.Resources.TempProdPic.GetHbitmap());
+                                    }
                                 }
                             }
+                            productBox.colorChange();
+                            productPanel.Controls.Add(productBox);
                         }
-                        productBox.colorChange();
-                        productPanel.Controls.Add(productBox);
                     }
+                    conn.Close();
                 }
-                conn.Close();
             }
+        }
+
+        private void tbtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadProduct(tbtSearch.Text);
         }
     }
 }

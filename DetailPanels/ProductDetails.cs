@@ -29,37 +29,73 @@ namespace Y_S_System.DetailPanels
         public double currentStock;
         public double productPrice, productStock;
         public string ProductName = "";
+        public string prodPicPath;
+        public string barcodePicPath;
+        public Bitmap barcodeBitmap;
         public ProductDetails(string role, int mode)
         {
             InitializeComponent();
             _role = role;
             _mode = mode;
-            setMode();
+            setMode(_mode, _role);
         }
-        public void refresh()
+        
+        private void btnAddProd_Click(object sender, EventArgs e)
         {
-            foreach (var productView in Application.OpenForms.OfType<ProductView>())
+            AddProduct();
+        }//Add Product Button
+        private void btnUploadPic_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg", Multiselect = false })
             {
-                productView.LoadProduct();
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    prodPicPath = ofd.FileName;
+                    pbProdPic.Image = Image.FromFile(ofd.FileName);
+                }
             }
-            clearFields();
-        }
-        public void clearFields()
+        }//Upload Picture
+        private async void btnGenerate_Click(object sender, EventArgs e)
         {
-            tbProdID.Text = "";
-            tbProdName.Text = "";
-            tbProdPrice.Text = "";
-            tbProdStock.Text = "";
-            tbProdCode.Text = "";
-            cbProdUnit.Text = "";
-            pbProdPic.Image = Properties.Resources.TempProdPic;
-            pbBarcode.Image = null;
-            dgvInventoryHis.DataSource = null;
-            btnAddProd.Visible = true;
-            btnClear.Visible = false;
-            btnUpdateProd.Visible = false;
-            btnDeleteProd.Visible = false;
-        }
+            if (string.IsNullOrWhiteSpace(tbProdCode.Text))
+            {
+                Random random = new Random();
+                long randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
+                while (checkBarcode(randomNumber.ToString()) == false)
+                {
+                    randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
+                }
+                tbProdCode.Text = randomNumber.ToString();
+                pbBarcode.Image = generateBarcodeImage(randomNumber.ToString());
+            }
+            if (!string.IsNullOrWhiteSpace(tbProdCode.Text))
+            {
+                if (checkBarcode(tbProdCode.Text) == true)
+                {
+                    pbBarcode.Image = generateBarcodeImage(tbProdCode.Text);
+                }
+                if (checkBarcode(tbProdCode.Text) == false)
+                {
+
+                    string temp = tbProdCode.Text;
+                    tbProdCode.Text = "Barcode already exists";
+                    await Task.Delay(2000);
+                    tbProdCode.Text = temp;
+                }
+            }
+        }//Generate Barcode
+        private void btnAddStock_Click(object sender, EventArgs e)
+        {
+            updateStock();
+        }//Add Stock Button
+        private void btnUpdateProd_Click(object sender, EventArgs e)
+        {
+            UpdateProduct();
+        }//Update Product Button
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            clearFields();
+        }//Clear Fields Button
         public void LoadProduct(string ProductBarcode)
         {
             tbProdCode.Text = ProductBarcode;
@@ -102,23 +138,22 @@ namespace Y_S_System.DetailPanels
                                 pbBarcode.Image = Image.FromStream(ms);
                             }
                         }
-                        loadInventoryHistory(tbProdID.Text);
-                        btnAddProd.Visible = false;
-                        btnClear.Visible = true;
-                        btnUpdateProd.Visible = true;
-                        btnDeleteProd.Visible = true;
+                        loadInventoryHistory(ProductBarcode);
+                        if(_mode == 2)
+                        { setMode(3, _role); }
+                        
                     }
                 }
             }
-        }
-        public void loadInventoryHistory(string ProductID)
+        }//Load Product Details
+        public void loadInventoryHistory(string ProductBarcode)
         {
-            string prodHist = "SELECT `Date`, `AddedStock`, `RecordedStock` FROM `yarnstitchdata`.`inventory_history` WHERE (`ProductID` = @ProductID)";
+            string prodHist = "SELECT `Date`, `AddedStock`, `RecordedStock` FROM `yarnstitchdata`.`inventory_history` WHERE (`ProductBarcode` = @ProductBarcode)";
             MySqlConnection conn = new MySqlConnection(connstring);
             using (MySqlCommand cmd = new MySqlCommand(prodHist, conn))
             {
                 conn.Open();
-                cmd.Parameters.AddWithValue("@ProductID", ProductID);
+                cmd.Parameters.AddWithValue("@ProductBarcode", ProductBarcode);
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
                     try
@@ -132,10 +167,161 @@ namespace Y_S_System.DetailPanels
                     }
                 }
             }
-        }
-        public void setMode()
+        }//Load Inventory History
+        public void AddProduct()
         {
-            if (_mode == 1 && _role == "Cashier")
+            bool goodToGo = false;
+
+            goodToGo = checkFields(2);
+
+            if (goodToGo == true)
+            {
+                barcodePicPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), tbProdName.Text + ".png");
+                barcodeBitmap.Save(barcodePicPath, System.Drawing.Imaging.ImageFormat.Png);
+                string addProd = "INSERT INTO `yarnstitchdata`.`products` " +
+                   "(`ProductID`, `ProductName`, `ProductPrice`, `ProductUnit`, `ProductBarcode`, `ProductStock`, `ProductDate`, `ProductPic`, `ProductBarcodePic`) " +
+                   "VALUES (@ProductID, @ProductName, @ProductPrice, @ProductUnit, @ProductBarcode, @ProductStock, @ProductDate, @ProductPic, @ProductBarcodePic)";
+                MySqlConnection conn = new MySqlConnection(connstring);
+                using (MySqlCommand cmd = new MySqlCommand(addProd, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
+                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
+                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
+                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
+                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                    cmd.Parameters.AddWithValue("@ProductStock", productStock);
+                    cmd.Parameters.AddWithValue("@ProductDate", DateTime.Now.ToString("MM-dd-yyyy"));
+                    byte[] ProductBarcodePic = File.ReadAllBytes(barcodePicPath);
+                    cmd.Parameters.AddWithValue("@ProductBarcodePic", ProductBarcodePic);
+                    if (prodPicPath != null)
+                    {
+                        byte[] ProductPic = File.ReadAllBytes(prodPicPath);
+                        cmd.Parameters.AddWithValue("@ProductPic", ProductPic);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@ProductPic", DBNull.Value);
+                    }
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+                string addInventory = "INSERT INTO `yarnstitchdata`.`inventory_history` " +
+                    "(`ProductBarcode`, `Date`, `AddedStock`, `RecordedStock`) " +
+                    "VALUES (@ProductBarcode, @Date, @AddedStock, @RecordedStock)";
+                using (MySqlCommand cmd = new MySqlCommand(addInventory, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                    cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM-dd-yyyy"));
+                    cmd.Parameters.AddWithValue("@AddedStock", productStock);
+                    cmd.Parameters.AddWithValue("@RecordedStock", productStock);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+
+            }
+            refresh();
+        }//Add Product to Database
+        public void UpdateProduct()
+        {
+            bool goodToGo = false;
+
+            goodToGo = checkFields(1);
+
+            if (goodToGo == true)
+            {
+                string searchID = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`ProductBarcode` = @ProductBarcode)";
+                MySqlConnection conn = new MySqlConnection(connstring);
+                using (MySqlCommand cmd = new MySqlCommand(searchID, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            MessageBox.Show("Product does not exist.");
+                            return;
+                        }
+                        if (reader["ProductStock"].ToString() != tbProdStock.Text)
+                        {
+                            updateStock();
+                        }
+                    }
+                    conn.Close();
+                }
+
+                string updateProd = "UPDATE `yarnstitchdata`.`products` SET " +
+                "`ProductName` = @ProductName, " +
+                "`ProductPrice` = @ProductPrice, " +
+                "`ProductUnit` = @ProductUnit, " +
+                "`ProductID` = @ProductID " +
+                "WHERE `ProductBarcode` = @ProductBarcode";
+
+
+                using (MySqlCommand cmd = new MySqlCommand(updateProd, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
+                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
+                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
+                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
+                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+                string[] pic = { prodPicPath, barcodePicPath };
+                string[] storePic = { "ProductPic", "ProductBarcodePic" };
+                byte[] PicBytes;
+
+                for (int i = 0; i < 2; i++)
+                {
+                    if (pic[i] != null)
+                    {
+                        PicBytes = File.ReadAllBytes(pic[i]);
+                        string updatePic = "UPDATE `yarnstitchdata`.`products` SET " +
+                        "`" + storePic[i] + "` = @ProductPic " +
+                        "WHERE `ProductBarcode` = @ProductBarcode";
+                        using (MySqlCommand cmd = new MySqlCommand(updatePic, conn))
+                        {
+                            conn.Open();
+                            cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                            cmd.Parameters.AddWithValue("@ProductPic", PicBytes);
+
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                        }
+                    }
+                }
+                refresh();
+            }
+        }//Update Product in Database
+        public void refresh()
+        {
+            foreach (var productView in Application.OpenForms.OfType<ProductView>())
+            {
+                productView.LoadProduct(null);
+            }
+            clearFields();
+        }//Refresh Product View
+        public void clearFields()
+        {
+            tbProdID.Text = "";
+            tbProdName.Text = "";
+            tbProdPrice.Text = "";
+            tbProdStock.Text = "";
+            tbProdCode.Text = "";
+            cbProdUnit.Text = "";
+            pbProdPic.Image = Properties.Resources.TempProdPic;
+            pbBarcode.Image = null;
+            dgvInventoryHis.DataSource = null;
+            setMode(_mode, _role);
+        }//Clear Fields
+        public void setMode(int mode, string role)
+        {
+            if (mode == 1 && role == "Cashier")
             {
                 btnAddProd.Visible = false;
                 btnDeleteProd.Visible = false;
@@ -149,7 +335,7 @@ namespace Y_S_System.DetailPanels
                 tbProdCode.Enabled = false;
                 btnUploadPic.Visible = false;
             }
-            if (_mode == 1 && _role == "Admin")
+            if (mode == 1 && role == "Admin")
             {
                 btnAddProd.Visible = false;
                 btnDeleteProd.Visible = false;
@@ -165,11 +351,11 @@ namespace Y_S_System.DetailPanels
                 btnAddStock.Visible = true;
                 btnClear.Visible = false;
             }
-            if (_mode == 2 && _role == "Admin")
+            if (mode == 2 && role == "Admin")
             {
                 btnAddProd.Visible = true;
-                btnDeleteProd.Visible = true;
-                btnUpdateProd.Visible = true;
+                btnDeleteProd.Visible = false;
+                btnUpdateProd.Visible = false;
                 btnGenerate.Visible = true;
                 tbProdName.Enabled = true;
                 tbProdPrice.Enabled = true;
@@ -181,7 +367,23 @@ namespace Y_S_System.DetailPanels
                 btnAddStock.Visible = false;
                 btnClear.Visible = false;
             }
-        }
+            if (mode == 3 && role == "Admin")
+            {
+                btnAddProd.Visible = false;
+                btnDeleteProd.Visible = true;
+                btnUpdateProd.Visible = true;
+                btnGenerate.Visible = false;
+                tbProdName.Enabled = true;
+                tbProdPrice.Enabled = true;
+                tbProdID.Enabled = true;
+                cbProdUnit.Enabled = true;
+                tbProdID.Enabled = true;
+                tbProdCode.Enabled = true;
+                btnUploadPic.Visible = true;
+                btnAddStock.Visible = true;
+                btnClear.Visible = true;
+            }
+        }//Set Mode (Admin/Cashier & Inventory/Product View)
         public bool checkFields(int mode)
         {
             if (string.IsNullOrWhiteSpace(tbProdName.Text) || string.IsNullOrWhiteSpace(tbProdPrice.Text) || string.IsNullOrWhiteSpace(tbProdStock.Text) || string.IsNullOrWhiteSpace(tbProdCode.Text) || string.IsNullOrWhiteSpace(cbProdUnit.Text) || pbProdPic.Image == null || pbBarcode.Image == null)
@@ -236,76 +438,7 @@ namespace Y_S_System.DetailPanels
                 }
             }
             return false;
-        }
-        private void btnAddProd_Click(object sender, EventArgs e)
-        {
-            bool goodToGo = false;
-
-            goodToGo = checkFields(2);
-
-            if (goodToGo == true)
-            {
-                barcodePicPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), tbProdName.Text + ".png");
-                barcodeBitmap.Save(barcodePicPath, System.Drawing.Imaging.ImageFormat.Png);
-                string addProd = "INSERT INTO `yarnstitchdata`.`products` " +
-                   "(`ProductID`, `ProductName`, `ProductPrice`, `ProductUnit`, `ProductBarcode`, `ProductStock`, `ProductDate`, `ProductPic`, `ProductBarcodePic`) " +
-                   "VALUES (@ProductID, @ProductName, @ProductPrice, @ProductUnit, @ProductBarcode, @ProductStock, @ProductDate, @ProductPic, @ProductBarcodePic)";
-                MySqlConnection conn = new MySqlConnection(connstring);
-                using (MySqlCommand cmd = new MySqlCommand(addProd, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
-                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
-                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
-                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
-                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-                    cmd.Parameters.AddWithValue("@ProductStock", productStock);
-                    cmd.Parameters.AddWithValue("@ProductDate", DateTime.Now.ToString("MM-dd-yyyy"));
-                    byte[] ProductBarcodePic = File.ReadAllBytes(barcodePicPath);
-                    cmd.Parameters.AddWithValue("@ProductBarcodePic", ProductBarcodePic);
-                    if (prodPicPath != null)
-                    {
-                        byte[] ProductPic = File.ReadAllBytes(prodPicPath);
-                        cmd.Parameters.AddWithValue("@ProductPic", ProductPic);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("@ProductPic", DBNull.Value);
-                    }
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-                string addInventory = "INSERT INTO `yarnstitchdata`.`inventory_history` " +
-                    "(`ProductID`, `Date`, `AddedStock`, `RecordedStock`) " +
-                    "VALUES (@ProductID, @Date, @AddedStock, @RecordedStock)";
-                using (MySqlCommand cmd = new MySqlCommand(addInventory, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
-                    cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM-dd-yyyy"));
-                    cmd.Parameters.AddWithValue("@AddedStock", productStock);
-                    cmd.Parameters.AddWithValue("@RecordedStock", productStock);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-
-            }
-            refresh();
-        }
-        public string prodPicPath;
-        private void btnUploadPic_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg", Multiselect = false })
-            {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    prodPicPath = ofd.FileName;
-                    pbProdPic.Image = Image.FromFile(ofd.FileName);
-                }
-            }
-        }
-        public string barcodePicPath;
-        public Bitmap barcodeBitmap;
+        }//Check Fields
         public Bitmap generateBarcodeImage(string code)
         {
             BarcodeWriter writer = new BarcodeWriter
@@ -330,7 +463,7 @@ namespace Y_S_System.DetailPanels
 
             barcodeBitmap = bitmap;
             return bitmap;
-        }
+        }//Generate Barcode Image
         public bool checkBarcode(string code)
         {
             string checkBarcod = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`ProductBarcode` = @Barcode)";
@@ -353,120 +486,7 @@ namespace Y_S_System.DetailPanels
                     }
                 }
             }
-        }
-        private async void btnGenerate_Click(object sender, EventArgs e)
-        {
-
-            if (string.IsNullOrWhiteSpace(tbProdCode.Text))
-            {
-                Random random = new Random();
-                long randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
-                while (checkBarcode(randomNumber.ToString()) == false)
-                {
-                    randomNumber = random.Next(100000000, 999999999) * 1000L + random.Next(1000);
-                }
-                tbProdCode.Text = randomNumber.ToString();
-                pbBarcode.Image = generateBarcodeImage(randomNumber.ToString());
-            }
-            if (!string.IsNullOrWhiteSpace(tbProdCode.Text))
-            {
-                if (checkBarcode(tbProdCode.Text) == true)
-                {
-                    pbBarcode.Image = generateBarcodeImage(tbProdCode.Text);
-                }
-                if (checkBarcode(tbProdCode.Text) == false)
-                {
-
-                    string temp = tbProdCode.Text;
-                    tbProdCode.Text = "Barcode already exists";
-                    await Task.Delay(2000);
-                    tbProdCode.Text = temp;
-                }
-            }
-        }
-        private void btnAddStock_Click(object sender, EventArgs e)
-        {
-            updateStock();
-        }
-        private void btnUpdateProd_Click(object sender, EventArgs e)
-        {
-            bool goodToGo = false;
-
-            goodToGo = checkFields(1);
-
-            if (goodToGo == true)
-            {
-                string searchID = "SELECT * FROM `yarnstitchdata`.`products` WHERE (`ProductBarcode` = @ProductBarcode)";
-                MySqlConnection conn = new MySqlConnection(connstring);
-                using (MySqlCommand cmd = new MySqlCommand(searchID, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (!reader.Read())
-                        {
-                            MessageBox.Show("Product does not exist.");
-                            return;
-                        }
-                        if (reader["ProductStock"].ToString() != tbProdStock.Text)
-                        {
-                            updateStock();
-                        }
-                    }
-                    conn.Close();
-                }
-
-                string updateProd = "UPDATE `yarnstitchdata`.`products` SET " +
-                "`ProductName` = @ProductName, " +
-                "`ProductPrice` = @ProductPrice, " +
-                "`ProductUnit` = @ProductUnit, " +
-                "`ProductBarcode` = @ProductBarcode " +
-                "WHERE `ProductID` = @ProductID";
-
-
-                using (MySqlCommand cmd = new MySqlCommand(updateProd, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
-                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
-                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
-                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
-                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-                string[] pic = { prodPicPath, barcodePicPath };
-                string[] storePic = { "ProductPic", "ProductBarcodePic" };
-                byte[] PicBytes;
-
-                for (int i = 0; i < 2; i++)
-                {
-                    if (pic[i] != null)
-                    {
-                        PicBytes = File.ReadAllBytes(pic[i]);
-                        string updatePic = "UPDATE `yarnstitchdata`.`products` SET " +
-                        "`" + storePic[i] + "` = @ProductPic " +
-                        "WHERE `ProductID` = @ProductID";
-                        using (MySqlCommand cmd = new MySqlCommand(updatePic, conn))
-                        {
-                            conn.Open();
-                            cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
-                            cmd.Parameters.AddWithValue("@ProductPic", PicBytes);
-
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                        }
-                    }
-                }
-                refresh();
-            }
-        }
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            clearFields();
-        }
+        }//Check Barcode in Database
         public void updateStock()
         {
             double productStock;
@@ -477,12 +497,12 @@ namespace Y_S_System.DetailPanels
             }
             MySqlConnection conn = new MySqlConnection(connstring);
             string addInventory = "INSERT INTO `yarnstitchdata`.`inventory_history` " +
-                    "(`ProductID`, `Date`, `AddedStock`, `RecordedStock`) " +
-                    "VALUES (@ProductID, @Date, @AddedStock, @RecordedStock)";
+                    "(`ProductBarcode`, `Date`, `AddedStock`, `RecordedStock`) " +
+                    "VALUES (@ProductBarcode, @Date, @AddedStock, @RecordedStock)";
             using (MySqlCommand cmd = new MySqlCommand(addInventory, conn))
             {
                 conn.Open();
-                cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
+                cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
                 cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM-dd-yyyy"));
                 cmd.Parameters.AddWithValue("@AddedStock", (productStock - currentStock));
                 cmd.Parameters.AddWithValue("@RecordedStock", productStock);
@@ -491,19 +511,18 @@ namespace Y_S_System.DetailPanels
             }
             string updateStock = "UPDATE `yarnstitchdata`.`products` SET " +
                 "`ProductStock` = @ProductStock " +
-                "WHERE `ProductID` = @ProductID";
+                "WHERE `ProductBarcode` = @ProductBarcode";
             using (MySqlCommand cmd = new MySqlCommand(updateStock, conn))
             {
                 conn.Open();
-                cmd.Parameters.AddWithValue("@ProductID", tbProdID.Text);
+                cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
                 cmd.Parameters.AddWithValue("@ProductStock", productStock);
                 cmd.ExecuteNonQuery();
                 conn.Close();
             }
             refresh();
-        }
-
-
+        }//Update Stock
+     
         //Delete Button with confirmation()
     }
 }
