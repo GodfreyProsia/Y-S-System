@@ -31,6 +31,7 @@
             label2 = new Label();
             tbtSearch = new TextBox();
             dgvSales = new DataGridView();
+            cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             ((System.ComponentModel.ISupportInitialize)dgvSales).BeginInit();
             SuspendLayout();
             // 
@@ -52,6 +53,7 @@
             tbtSearch.Name = "tbtSearch";
             tbtSearch.Size = new Size(197, 27);
             tbtSearch.TabIndex = 12;
+            tbtSearch.TextChanged += tbtSearch_TextChanged_1;
             // 
             // dgvSales
             // 
@@ -59,10 +61,20 @@
             dgvSales.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvSales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSales.GridColor = Color.FromArgb(2, 21, 38);
-            dgvSales.Location = new Point(12, 61);
+            dgvSales.Location = new Point(12, 351);
             dgvSales.Name = "dgvSales";
-            dgvSales.Size = new Size(645, 608);
+            dgvSales.Size = new Size(645, 318);
             dgvSales.TabIndex = 14;
+            dgvSales.CellContentClick += dgvSales_CellContentClick;
+            // 
+            // cartesianChart1
+            // 
+            cartesianChart1.Font = new Font("Roboto", 9F);
+            cartesianChart1.Location = new Point(12, 49);
+            cartesianChart1.MatchAxesScreenDataRatio = false;
+            cartesianChart1.Name = "cartesianChart1";
+            cartesianChart1.Size = new Size(645, 286);
+            cartesianChart1.TabIndex = 15;
             // 
             // SalesView
             // 
@@ -70,6 +82,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(669, 681);
+            Controls.Add(cartesianChart1);
             Controls.Add(dgvSales);
             Controls.Add(label2);
             Controls.Add(tbtSearch);
@@ -86,5 +99,6 @@
         private Label label2;
         private TextBox tbtSearch;
         private DataGridView dgvSales;
+        private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
     }
 }

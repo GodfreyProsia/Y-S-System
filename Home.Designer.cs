@@ -204,6 +204,7 @@
             // 
             RightPanel.AllowDrop = true;
             RightPanel.BackColor = Color.Transparent;
+            RightPanel.BorderStyle = BorderStyle.FixedSingle;
             RightPanel.Dock = DockStyle.Right;
             RightPanel.Location = new Point(875, 0);
             RightPanel.Name = "RightPanel";
@@ -213,6 +214,7 @@
             // MidPanel
             // 
             MidPanel.BackColor = Color.Transparent;
+            MidPanel.BorderStyle = BorderStyle.FixedSingle;
             MidPanel.Dock = DockStyle.Fill;
             MidPanel.Location = new Point(206, 0);
             MidPanel.Name = "MidPanel";

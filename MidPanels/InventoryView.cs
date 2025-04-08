@@ -14,7 +14,7 @@ namespace Y_S_System.MidPanels
 {
     public partial class InventoryView : Form
     {
-        string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
+        string connstring = connection.connstring;
         public InventoryView()
         {
             InitializeComponent();
@@ -24,7 +24,7 @@ namespace Y_S_System.MidPanels
         {
             dgvInventory.Rows.Clear();
             string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
-            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '" + search + "%'";
+            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '%" + search + "%'";
             MySqlConnection conn = new MySqlConnection(connstring);
             if (string.IsNullOrEmpty(search))
             {
@@ -36,7 +36,7 @@ namespace Y_S_System.MidPanels
                         while (reader.Read())
                         {
                             dgvInventory.Rows.Add(reader["ProductName"].ToString(),
-                                reader["ProductPrice"].ToString() + "/" + reader["ProductUnit"].ToString(),
+                                "Php "+ reader["ProductPrice"].ToString() + " / " + reader["ProductUnit"].ToString(),
                                 reader["ProductStock"].ToString(),
                                 reader["ProductBarcode"].ToString());
                         }
@@ -60,7 +60,6 @@ namespace Y_S_System.MidPanels
                     }
                 }
             }
-
         }
 
         private void dgvInventory_CellClick(object sender, DataGridViewCellEventArgs e)

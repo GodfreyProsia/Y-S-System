@@ -36,6 +36,7 @@
             // productPanel
             // 
             productPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            productPanel.AutoScroll = true;
             productPanel.Location = new Point(12, 71);
             productPanel.Name = "productPanel";
             productPanel.Size = new Size(645, 598);

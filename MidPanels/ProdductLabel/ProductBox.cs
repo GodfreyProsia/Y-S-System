@@ -91,9 +91,9 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // priceLabel
             // 
             priceLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
-            priceLabel.Location = new Point(27, 201);
+            priceLabel.Location = new Point(5, 201);
             priceLabel.Name = "priceLabel";
-            priceLabel.Size = new Size(100, 23);
+            priceLabel.Size = new Size(150, 23);
             priceLabel.TabIndex = 2;
             priceLabel.Text = "Price";
             priceLabel.TextAlign = ContentAlignment.TopCenter;
@@ -102,9 +102,9 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // stockLabel
             // 
             stockLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
-            stockLabel.Location = new Point(51, 224);
+            stockLabel.Location = new Point(5, 224);
             stockLabel.Name = "stockLabel";
-            stockLabel.Size = new Size(54, 18);
+            stockLabel.Size = new Size(150, 18);
             stockLabel.TabIndex = 3;
             stockLabel.Text = "0";
             stockLabel.TextAlign = ContentAlignment.TopCenter;

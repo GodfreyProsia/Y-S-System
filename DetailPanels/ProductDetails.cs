@@ -18,12 +18,14 @@ using ZXing.SkiaSharp;
 using static Org.BouncyCastle.Asn1.Cmp.Challenge;
 using SkiaSharp;
 using ZXing.SkiaSharp.Rendering;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Google.Protobuf.Collections;
 
 namespace Y_S_System.DetailPanels
 {
     public partial class ProductDetails : Form
     {
-        string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
+        string connstring = connection.connstring;
         public string _role;
         public int _mode;
         public double currentStock;
@@ -38,6 +40,7 @@ namespace Y_S_System.DetailPanels
             _role = role;
             _mode = mode;
             setMode(_mode, _role);
+            LoadUnit();
         }
         
         private void btnAddProd_Click(object sender, EventArgs e)
@@ -191,7 +194,7 @@ namespace Y_S_System.DetailPanels
                     cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
                     cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
                     cmd.Parameters.AddWithValue("@ProductStock", productStock);
-                    cmd.Parameters.AddWithValue("@ProductDate", DateTime.Now.ToString("MM-dd-yyyy"));
+                    cmd.Parameters.AddWithValue("@ProductDate", DateTime.Now.ToString("yyyy-MM-dd"));
                     byte[] ProductBarcodePic = File.ReadAllBytes(barcodePicPath);
                     cmd.Parameters.AddWithValue("@ProductBarcodePic", ProductBarcodePic);
                     if (prodPicPath != null)
@@ -213,13 +216,28 @@ namespace Y_S_System.DetailPanels
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-                    cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM-dd-yyyy"));
+                    cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("yyyy-MM-dd"));
                     cmd.Parameters.AddWithValue("@AddedStock", productStock);
                     cmd.Parameters.AddWithValue("@RecordedStock", productStock);
                     cmd.ExecuteNonQuery();
                     conn.Close();
                 }
-
+                string addFinnance = "INSERT INTO `yarnstitchdata`.`finnancesales` " +
+                    "(`ProductBarcode`, `ProductName`, `ProductPrice`, `ProductUnit`, `ProductSold`, `ProductTotal`) " +
+                    "VALUES (@ProductBarcode, @ProductName, @ProductPrice, @ProductUnit, @ProductSold, @ProductTotal)";
+                using(MySqlCommand cmd = new MySqlCommand(addFinnance, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                    cmd.Parameters.AddWithValue("@ProductName", tbProdName.Text);
+                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice);
+                    cmd.Parameters.AddWithValue("@ProductUnit", cbProdUnit.Text);
+                    cmd.Parameters.AddWithValue("@ProductSold", 0);
+                    cmd.Parameters.AddWithValue("@ProductTotal", 0);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+                LoadUnit();
             }
             refresh();
         }//Add Product to Database
@@ -304,8 +322,12 @@ namespace Y_S_System.DetailPanels
             {
                 productView.LoadProduct(null);
             }
+            foreach (var inventoryView in Application.OpenForms.OfType<InventoryView>())
+            {
+                inventoryView.LoadData(null);
+            }
             clearFields();
-        }//Refresh Product View
+        }//Refresh Product View & Inventory View
         public void clearFields()
         {
             tbProdID.Text = "";
@@ -405,7 +427,7 @@ namespace Y_S_System.DetailPanels
             {
                 bool[] allGood = { false, false };
                 string[] checkType = { "Name", "ID" };
-                TextBox[] checkTextBox = { tbProdName, tbProdID };
+                System.Windows.Forms.TextBox[] checkTextBox = { tbProdName, tbProdID };
                 for (int i = 0; i < mode; i++)
                 {
                     string checkProd = "SELECT * FROM `yarnstitchdata`.`products` WHERE `Product" + checkType[i] + "` = @Product";
@@ -503,7 +525,7 @@ namespace Y_S_System.DetailPanels
             {
                 conn.Open();
                 cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
-                cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("MM-dd-yyyy"));
+                cmd.Parameters.AddWithValue("@Date", DateTime.Now.ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("@AddedStock", (productStock - currentStock));
                 cmd.Parameters.AddWithValue("@RecordedStock", productStock);
                 cmd.ExecuteNonQuery();
@@ -522,7 +544,26 @@ namespace Y_S_System.DetailPanels
             }
             refresh();
         }//Update Stock
+        public void LoadUnit()
+        {
+            string loadUnit = "SELECT `ProductUnit` FROM `yarnstitchdata`.`products`";
+            MySqlConnection conn = new MySqlConnection(connstring);
+            using (MySqlCommand cmd = new MySqlCommand(loadUnit, conn))
+            {
+                conn.Open();
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (!cbProdUnit.Items.Contains(reader["ProductUnit"].ToString()))
+                        {
+                            cbProdUnit.Items.Add(reader["ProductUnit"].ToString());
+                        }
+                    }
+                }
+            }
+        }
      
         //Delete Button with confirmation()
-    }
+    }//Remember the inputted Units
 }

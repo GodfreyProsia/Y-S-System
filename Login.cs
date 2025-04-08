@@ -15,7 +15,7 @@ namespace Y_S_System
 {
     public partial class Login : Form
     {
-        string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
+        string connstring = connection.connstring;
         public static MAIN instance1;
         public MAIN _main;
         int logkey;

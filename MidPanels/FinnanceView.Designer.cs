@@ -1,6 +1,6 @@
 ﻿namespace Y_S_System.MidPanels
 {
-    partial class FinanceView
+    partial class FinnanceView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,40 +28,80 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            tbProdName = new TextBox();
+            dgvFinnance = new DataGridView();
+            ProductBarcode = new DataGridViewTextBoxColumn();
+            ProductName = new DataGridViewTextBoxColumn();
+            ProductPrice = new DataGridViewTextBoxColumn();
+            TotalSold = new DataGridViewTextBoxColumn();
+            Total = new DataGridViewTextBoxColumn();
+            tbNoSales = new TextBox();
             lblProdName = new Label();
-            textBox1 = new TextBox();
+            tbTotalSales = new TextBox();
             label1 = new Label();
-            dateTimePicker1 = new DateTimePicker();
+            date1 = new DateTimePicker();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            dateTimePicker2 = new DateTimePicker();
+            date2 = new DateTimePicker();
             label5 = new Label();
-            textBox2 = new TextBox();
+            tbSearch = new TextBox();
             label6 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvFinnance).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // dgvFinnance
             // 
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.BackgroundColor = Color.FromArgb(3, 52, 110);
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.GridColor = Color.FromArgb(2, 21, 38);
-            dataGridView1.Location = new Point(12, 242);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(645, 427);
-            dataGridView1.TabIndex = 0;
+            dgvFinnance.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvFinnance.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvFinnance.BackgroundColor = Color.FromArgb(3, 52, 110);
+            dgvFinnance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvFinnance.Columns.AddRange(new DataGridViewColumn[] { ProductBarcode, ProductName, ProductPrice, TotalSold, Total });
+            dgvFinnance.GridColor = Color.FromArgb(2, 21, 38);
+            dgvFinnance.Location = new Point(12, 242);
+            dgvFinnance.Name = "dgvFinnance";
+            dgvFinnance.ReadOnly = true;
+            dgvFinnance.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvFinnance.Size = new Size(645, 427);
+            dgvFinnance.TabIndex = 0;
+            dgvFinnance.CellClick += dgvFinnance_CellClick;
             // 
-            // tbProdName
+            // ProductBarcode
             // 
-            tbProdName.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbProdName.Location = new Point(145, 103);
-            tbProdName.Name = "tbProdName";
-            tbProdName.Size = new Size(49, 27);
-            tbProdName.TabIndex = 35;
+            ProductBarcode.HeaderText = "Barcode";
+            ProductBarcode.Name = "ProductBarcode";
+            ProductBarcode.ReadOnly = true;
+            // 
+            // ProductName
+            // 
+            ProductName.HeaderText = "Product";
+            ProductName.Name = "ProductName";
+            ProductName.ReadOnly = true;
+            // 
+            // ProductPrice
+            // 
+            ProductPrice.HeaderText = "Price";
+            ProductPrice.Name = "ProductPrice";
+            ProductPrice.ReadOnly = true;
+            // 
+            // TotalSold
+            // 
+            TotalSold.HeaderText = "Sold";
+            TotalSold.Name = "TotalSold";
+            TotalSold.ReadOnly = true;
+            // 
+            // Total
+            // 
+            Total.HeaderText = "Total";
+            Total.Name = "Total";
+            Total.ReadOnly = true;
+            // 
+            // tbNoSales
+            // 
+            tbNoSales.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbNoSales.Location = new Point(145, 103);
+            tbNoSales.Name = "tbNoSales";
+            tbNoSales.Size = new Size(126, 27);
+            tbNoSales.TabIndex = 35;
             // 
             // lblProdName
             // 
@@ -75,13 +115,13 @@
             lblProdName.TabIndex = 34;
             lblProdName.Text = "Total Sales";
             // 
-            // textBox1
+            // tbTotalSales
             // 
-            textBox1.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(145, 136);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(307, 27);
-            textBox1.TabIndex = 37;
+            tbTotalSales.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbTotalSales.Location = new Point(145, 136);
+            tbTotalSales.Name = "tbTotalSales";
+            tbTotalSales.Size = new Size(307, 27);
+            tbTotalSales.TabIndex = 37;
             // 
             // label1
             // 
@@ -95,12 +135,14 @@
             label1.TabIndex = 36;
             label1.Text = "No of Sales";
             // 
-            // dateTimePicker1
+            // date1
             // 
-            dateTimePicker1.Location = new Point(50, 65);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
-            dateTimePicker1.TabIndex = 38;
+            date1.Location = new Point(50, 65);
+            date1.Name = "date1";
+            date1.Size = new Size(200, 23);
+            date1.TabIndex = 38;
+            date1.Value = new DateTime(2024, 1, 1, 0, 0, 0, 0);
+            date1.ValueChanged += date1_ValueChanged;
             // 
             // label2
             // 
@@ -138,12 +180,13 @@
             label4.TabIndex = 42;
             label4.Text = "To";
             // 
-            // dateTimePicker2
+            // date2
             // 
-            dateTimePicker2.Location = new Point(276, 65);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(200, 23);
-            dateTimePicker2.TabIndex = 41;
+            date2.Location = new Point(276, 65);
+            date2.Name = "date2";
+            date2.Size = new Size(200, 23);
+            date2.TabIndex = 41;
+            date2.ValueChanged += date2_ValueChanged;
             // 
             // label5
             // 
@@ -157,13 +200,14 @@
             label5.TabIndex = 43;
             label5.Text = "Sales";
             // 
-            // textBox2
+            // tbSearch
             // 
-            textBox2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox2.Location = new Point(77, 209);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(307, 27);
-            textBox2.TabIndex = 45;
+            tbSearch.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbSearch.Location = new Point(77, 209);
+            tbSearch.Name = "tbSearch";
+            tbSearch.Size = new Size(307, 27);
+            tbSearch.TabIndex = 45;
+            tbSearch.TextChanged += tbSearch_TextChanged;
             // 
             // label6
             // 
@@ -177,47 +221,52 @@
             label6.TabIndex = 44;
             label6.Text = "Search";
             // 
-            // FinanceView
+            // FinnanceView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(669, 681);
-            Controls.Add(textBox2);
+            Controls.Add(tbSearch);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
-            Controls.Add(dateTimePicker2);
+            Controls.Add(date2);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(dateTimePicker1);
-            Controls.Add(textBox1);
+            Controls.Add(date1);
+            Controls.Add(tbTotalSales);
             Controls.Add(label1);
-            Controls.Add(tbProdName);
+            Controls.Add(tbNoSales);
             Controls.Add(lblProdName);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvFinnance);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "FinanceView";
+            Name = "FinnanceView";
             Text = "FinnanceView";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvFinnance).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
-        private TextBox tbProdName;
+        private DataGridView dgvFinnance;
+        private TextBox tbNoSales;
         private Label lblProdName;
-        private TextBox textBox1;
+        private TextBox tbTotalSales;
         private Label label1;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker date1;
         private Label label2;
         private Label label3;
         private Label label4;
-        private DateTimePicker dateTimePicker2;
+        private DateTimePicker date2;
         private Label label5;
-        private TextBox textBox2;
+        private TextBox tbSearch;
         private Label label6;
+        private DataGridViewTextBoxColumn ProductBarcode;
+        private DataGridViewTextBoxColumn ProductName;
+        private DataGridViewTextBoxColumn ProductPrice;
+        private DataGridViewTextBoxColumn TotalSold;
+        private DataGridViewTextBoxColumn Total;
     }
 }

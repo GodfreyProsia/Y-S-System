@@ -1,6 +1,6 @@
 ﻿namespace Y_S_System.DetailPanels
 {
-    partial class FinanceDetails
+    partial class FinnanceDetails
     {
         /// <summary>
         /// Required designer variable.
@@ -30,16 +30,19 @@
         {
             lblBarcode = new Label();
             lblTotal = new Label();
-            lblAmount = new Label();
+            lblStock = new Label();
             lblPrice = new Label();
             lblProdName = new Label();
             pbProdPic = new PictureBox();
             dgvSale = new DataGridView();
             Product = new DataGridViewTextBoxColumn();
+            SoldDate = new DataGridViewTextBoxColumn();
             Amount = new DataGridViewTextBoxColumn();
             Price = new DataGridViewTextBoxColumn();
+            Total = new DataGridViewTextBoxColumn();
+            OrderID = new DataGridViewTextBoxColumn();
             label1 = new Label();
-            label2 = new Label();
+            lblSold = new Label();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSale).BeginInit();
             SuspendLayout();
@@ -71,18 +74,18 @@
             lblTotal.TabIndex = 44;
             lblTotal.Text = "Total";
             // 
-            // lblAmount
+            // lblStock
             // 
-            lblAmount.Anchor = AnchorStyles.Top;
-            lblAmount.AutoSize = true;
-            lblAmount.BackColor = Color.FromArgb(2, 21, 38);
-            lblAmount.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblAmount.ForeColor = Color.White;
-            lblAmount.Location = new Point(171, 176);
-            lblAmount.Name = "lblAmount";
-            lblAmount.Size = new Size(65, 19);
-            lblAmount.TabIndex = 43;
-            lblAmount.Text = "Amount";
+            lblStock.Anchor = AnchorStyles.Top;
+            lblStock.AutoSize = true;
+            lblStock.BackColor = Color.FromArgb(2, 21, 38);
+            lblStock.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblStock.ForeColor = Color.White;
+            lblStock.Location = new Point(171, 176);
+            lblStock.Name = "lblStock";
+            lblStock.Size = new Size(49, 19);
+            lblStock.TabIndex = 43;
+            lblStock.Text = "Stock";
             // 
             // lblPrice
             // 
@@ -124,13 +127,14 @@
             // dgvSale
             // 
             dgvSale.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
-            dgvSale.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvSale.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvSale.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvSale.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSale.Columns.AddRange(new DataGridViewColumn[] { Product, Amount, Price });
+            dgvSale.Columns.AddRange(new DataGridViewColumn[] { Product, SoldDate, Amount, Price, Total, OrderID });
             dgvSale.GridColor = Color.FromArgb(2, 21, 38);
             dgvSale.Location = new Point(11, 239);
             dgvSale.Name = "dgvSale";
+            dgvSale.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSale.Size = new Size(367, 314);
             dgvSale.TabIndex = 39;
             // 
@@ -138,16 +142,37 @@
             // 
             Product.HeaderText = "Product";
             Product.Name = "Product";
+            Product.Width = 74;
+            // 
+            // SoldDate
+            // 
+            SoldDate.HeaderText = "Date";
+            SoldDate.Name = "SoldDate";
+            SoldDate.Width = 56;
             // 
             // Amount
             // 
             Amount.HeaderText = "Amount";
             Amount.Name = "Amount";
+            Amount.Width = 76;
             // 
             // Price
             // 
             Price.HeaderText = "Price";
             Price.Name = "Price";
+            Price.Width = 58;
+            // 
+            // Total
+            // 
+            Total.HeaderText = "Total";
+            Total.Name = "Total";
+            Total.Width = 57;
+            // 
+            // OrderID
+            // 
+            OrderID.HeaderText = "OrderID";
+            OrderID.Name = "OrderID";
+            OrderID.Width = 73;
             // 
             // label1
             // 
@@ -161,29 +186,29 @@
             label1.TabIndex = 38;
             label1.Text = "Product Statistics";
             // 
-            // label2
+            // lblSold
             // 
-            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.BackColor = Color.FromArgb(2, 21, 38);
-            label2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.White;
-            label2.Location = new Point(11, 568);
-            label2.Name = "label2";
-            label2.Size = new Size(123, 19);
-            label2.TabIndex = 47;
-            label2.Text = "Total Units Sold";
+            lblSold.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblSold.AutoSize = true;
+            lblSold.BackColor = Color.FromArgb(2, 21, 38);
+            lblSold.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSold.ForeColor = Color.White;
+            lblSold.Location = new Point(11, 568);
+            lblSold.Name = "lblSold";
+            lblSold.Size = new Size(123, 19);
+            lblSold.TabIndex = 47;
+            lblSold.Text = "Total Units Sold";
             // 
-            // FinanceDetails
+            // FinnanceDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
-            Controls.Add(label2);
+            Controls.Add(lblSold);
             Controls.Add(lblBarcode);
             Controls.Add(lblTotal);
-            Controls.Add(lblAmount);
+            Controls.Add(lblStock);
             Controls.Add(lblPrice);
             Controls.Add(lblProdName);
             Controls.Add(pbProdPic);
@@ -191,7 +216,7 @@
             Controls.Add(label1);
             ForeColor = Color.White;
             FormBorderStyle = FormBorderStyle.None;
-            Name = "FinanceDetails";
+            Name = "FinnanceDetails";
             Text = "FinnanceDetails";
             ((System.ComponentModel.ISupportInitialize)pbProdPic).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvSale).EndInit();
@@ -203,15 +228,18 @@
 
         private Label lblBarcode;
         private Label lblTotal;
-        private Label lblAmount;
+        private Label lblStock;
         private Label lblPrice;
         private Label lblProdName;
         private PictureBox pbProdPic;
         private DataGridView dgvSale;
+        private Label label1;
+        private Label lblSold;
         private DataGridViewTextBoxColumn Product;
+        private DataGridViewTextBoxColumn SoldDate;
         private DataGridViewTextBoxColumn Amount;
         private DataGridViewTextBoxColumn Price;
-        private Label label1;
-        private Label label2;
+        private DataGridViewTextBoxColumn OrderID;
+        private DataGridViewTextBoxColumn Total;
     }
 }

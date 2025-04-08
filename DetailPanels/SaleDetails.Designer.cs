@@ -43,6 +43,7 @@
             label1 = new Label();
             lblOCode = new Label();
             btnDeleteProd = new CustomControls.RJControls.RJButton();
+            tbAnalytics = new CustomControls.RJControls.RJButton();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSale).BeginInit();
             SuspendLayout();
@@ -184,7 +185,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Lato", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(11, 24);
+            label1.Location = new Point(11, 14);
             label1.Name = "label1";
             label1.Size = new Size(195, 42);
             label1.TabIndex = 20;
@@ -229,12 +230,39 @@
             btnDeleteProd.TextColor = Color.Black;
             btnDeleteProd.UseVisualStyleBackColor = false;
             // 
+            // tbAnalytics
+            // 
+            tbAnalytics.Anchor = AnchorStyles.Bottom;
+            tbAnalytics.BackColor = Color.FromArgb(110, 172, 218);
+            tbAnalytics.BackgroundColor = Color.FromArgb(110, 172, 218);
+            tbAnalytics.BorderColor = Color.Transparent;
+            tbAnalytics.BorderColor1 = Color.Transparent;
+            tbAnalytics.BorderColor2 = Color.Transparent;
+            tbAnalytics.BorderRadius = 0;
+            tbAnalytics.BorderRadius1 = 0;
+            tbAnalytics.BorderRadius2 = 0;
+            tbAnalytics.BorderSize = 0;
+            tbAnalytics.BorderSize1 = 0;
+            tbAnalytics.BorderSize2 = 0;
+            tbAnalytics.FlatAppearance.BorderSize = 0;
+            tbAnalytics.FlatStyle = FlatStyle.Flat;
+            tbAnalytics.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbAnalytics.ForeColor = Color.Black;
+            tbAnalytics.Location = new Point(264, 24);
+            tbAnalytics.Name = "tbAnalytics";
+            tbAnalytics.Size = new Size(106, 27);
+            tbAnalytics.TabIndex = 39;
+            tbAnalytics.Text = "Normal Mode";
+            tbAnalytics.TextColor = Color.Black;
+            tbAnalytics.UseVisualStyleBackColor = false;
+            // 
             // SaleDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
+            Controls.Add(tbAnalytics);
             Controls.Add(btnDeleteProd);
             Controls.Add(lblOCode);
             Controls.Add(lblChange);
@@ -273,5 +301,6 @@
         private Label label1;
         private Label lblOCode;
         private CustomControls.RJControls.RJButton btnDeleteProd;
+        private CustomControls.RJControls.RJButton tbAnalytics;
     }
 }

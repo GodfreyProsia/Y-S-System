@@ -15,7 +15,7 @@ namespace Y_S_System.MidPanels
 {
     public partial class ProductView : Form
     {
-        string connstring = "server=localhost;port=3306;user=root;password=Prosia24!;database=yarnstitchdata";
+        string connstring = connection.connstring;
         public int _mode;
         ProductBox productBox = new ProductBox();
         public ProductView(int mode)
@@ -41,7 +41,7 @@ namespace Y_S_System.MidPanels
                         {
                             ProductBox productBox = new ProductBox();
                             productBox.ProdName = reader["ProductName"].ToString();
-                            productBox.ProductPrice = "Php " + reader["ProductPrice"].ToString();
+                            productBox.ProductPrice = ("Php " + reader["ProductPrice"].ToString() + "/" + reader["ProductUnit"].ToString());
                             productBox.ProdBarcode = reader["ProductBarcode"].ToString();
                             productBox.Stock = reader["ProductStock"].ToString();
                             if (reader["ProductPic"] != DBNull.Value)

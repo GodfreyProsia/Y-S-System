@@ -48,6 +48,14 @@
             btnSubmit = new CustomControls.RJControls.RJButton();
             tbChange = new TextBox();
             label5 = new Label();
+            btnMode = new CustomControls.RJControls.RJButton();
+            lblOrderID = new Label();
+            ProductBarcode = new DataGridViewTextBoxColumn();
+            ProductName = new DataGridViewTextBoxColumn();
+            ProductAmount = new DataGridViewTextBoxColumn();
+            ProductPrice = new DataGridViewTextBoxColumn();
+            ProductUnit = new DataGridViewTextBoxColumn();
+            ProductTotal = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             SuspendLayout();
@@ -69,8 +77,9 @@
             dgvOrders.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvOrders.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvOrders.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvOrders.Columns.AddRange(new DataGridViewColumn[] { ProductBarcode, ProductName, ProductAmount, ProductPrice, ProductUnit, ProductTotal });
             dgvOrders.GridColor = Color.FromArgb(2, 21, 38);
-            dgvOrders.Location = new Point(12, 272);
+            dgvOrders.Location = new Point(10, 272);
             dgvOrders.MultiSelect = false;
             dgvOrders.Name = "dgvOrders";
             dgvOrders.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -301,12 +310,89 @@
             label5.TabIndex = 18;
             label5.Text = "Change";
             // 
+            // btnMode
+            // 
+            btnMode.Anchor = AnchorStyles.Top;
+            btnMode.BackColor = Color.FromArgb(110, 172, 218);
+            btnMode.BackgroundColor = Color.FromArgb(110, 172, 218);
+            btnMode.BorderColor = Color.Transparent;
+            btnMode.BorderColor1 = Color.Transparent;
+            btnMode.BorderColor2 = Color.Transparent;
+            btnMode.BorderRadius = 0;
+            btnMode.BorderRadius1 = 0;
+            btnMode.BorderRadius2 = 0;
+            btnMode.BorderSize = 0;
+            btnMode.BorderSize1 = 0;
+            btnMode.BorderSize2 = 0;
+            btnMode.FlatAppearance.BorderSize = 0;
+            btnMode.FlatStyle = FlatStyle.Flat;
+            btnMode.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnMode.ForeColor = Color.Black;
+            btnMode.Location = new Point(262, 27);
+            btnMode.Name = "btnMode";
+            btnMode.Size = new Size(106, 27);
+            btnMode.TabIndex = 20;
+            btnMode.Text = "Cashier Mode";
+            btnMode.TextColor = Color.Black;
+            btnMode.UseVisualStyleBackColor = false;
+            btnMode.Click += btnMode_Click;
+            // 
+            // lblOrderID
+            // 
+            lblOrderID.Anchor = AnchorStyles.Top;
+            lblOrderID.AutoSize = true;
+            lblOrderID.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOrderID.ForeColor = Color.White;
+            lblOrderID.Location = new Point(12, 242);
+            lblOrderID.Name = "lblOrderID";
+            lblOrderID.Size = new Size(69, 19);
+            lblOrderID.TabIndex = 21;
+            lblOrderID.Text = "Order ID";
+            // 
+            // ProductBarcode
+            // 
+            ProductBarcode.HeaderText = "Barcode";
+            ProductBarcode.Name = "ProductBarcode";
+            ProductBarcode.Width = 75;
+            // 
+            // ProductName
+            // 
+            ProductName.HeaderText = "Product";
+            ProductName.Name = "ProductName";
+            ProductName.Width = 74;
+            // 
+            // ProductAmount
+            // 
+            ProductAmount.HeaderText = "Amount";
+            ProductAmount.Name = "ProductAmount";
+            ProductAmount.Width = 76;
+            // 
+            // ProductPrice
+            // 
+            ProductPrice.HeaderText = "Price";
+            ProductPrice.Name = "ProductPrice";
+            ProductPrice.Width = 58;
+            // 
+            // ProductUnit
+            // 
+            ProductUnit.HeaderText = "Unit";
+            ProductUnit.Name = "ProductUnit";
+            ProductUnit.Width = 54;
+            // 
+            // ProductTotal
+            // 
+            ProductTotal.HeaderText = "Total";
+            ProductTotal.Name = "ProductTotal";
+            ProductTotal.Width = 57;
+            // 
             // OrderDetails
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(389, 681);
+            Controls.Add(lblOrderID);
+            Controls.Add(btnMode);
             Controls.Add(tbChange);
             Controls.Add(label5);
             Controls.Add(btnSubmit);
@@ -356,5 +442,13 @@
         private CustomControls.RJControls.RJButton btnSubmit;
         private TextBox tbChange;
         private Label label5;
+        private CustomControls.RJControls.RJButton btnMode;
+        private Label lblOrderID;
+        private DataGridViewTextBoxColumn ProductBarcode;
+        private DataGridViewTextBoxColumn ProductName;
+        private DataGridViewTextBoxColumn ProductAmount;
+        private DataGridViewTextBoxColumn ProductPrice;
+        private DataGridViewTextBoxColumn ProductUnit;
+        private DataGridViewTextBoxColumn ProductTotal;
     }
 }

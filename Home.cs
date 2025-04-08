@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,18 +21,19 @@ namespace Y_S_System
         public int _logkey;
         public Home(string role, int logkey)
         {
-            InitializeComponent();
-            loadRpanel(new OrderDetails());
-            loadMpanel(new ProductView(0));
             _logkey = logkey;
             _role = role;
+            InitializeComponent();
+            loadRpanel(new OrderDetails(_logkey));
+            loadMpanel(new ProductView(0));
+            
             if(_role == "Cashier")
             {
                 btnFinnance.Visible = false;
                 btnProducts.Visible = false;
             }
         }
-        public void loadRpanel(object Form) //loads the right panel
+        private void loadRpanel(object Form) //loads the right panel
         {
             if (RightPanel.Controls.Count > 0)
             {
@@ -54,7 +56,7 @@ namespace Y_S_System
             RightPanel.Tag = f;
             f.Show();
         }
-        public void loadMpanel(object Form)//loads the middle panel
+        private void loadMpanel(object Form)//loads the middle panel
         {
             if (MidPanel.Controls.Count > 0)
             {
@@ -77,7 +79,7 @@ namespace Y_S_System
             MidPanel.Tag = f;
             f.Show();
         }
-        public void tabChange(RJButton button)//changes the color of the button when clicked
+        private void tabChange(RJButton button)//changes the color of the button when clicked
         {
             btnHome.ForeColor = Color.White;
             btnInventory.ForeColor = Color.White;
@@ -94,9 +96,7 @@ namespace Y_S_System
         }
         private void btnHome_Click(object sender, EventArgs e)
         {
-            loadRpanel(new OrderDetails());
-            loadMpanel(new ProductView(0));
-            tabChange(btnHome);
+            AdminCashierMode();
         }
         private void btnInventory_Click(object sender, EventArgs e)
         {
@@ -118,9 +118,20 @@ namespace Y_S_System
         }
         private void btnFinnance_Click(object sender, EventArgs e)
         {
-            loadRpanel(new FinanceDetails());
-            loadMpanel(new FinanceView());
+            loadRpanel(new FinnanceDetails());
+            loadMpanel(new FinnanceView());
             tabChange(btnFinnance);
+        }
+        public void AdminOrderMode()
+        {
+            loadMpanel(new AdminOrderView());
+            tabChange(btnHome);
+        }
+        public void AdminCashierMode()
+        {
+            loadRpanel(new OrderDetails(_logkey));
+            loadMpanel(new ProductView(0));
+            tabChange(btnHome);
         }
     }
 }
