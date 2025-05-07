@@ -68,7 +68,8 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // pictureBox
             // 
             pictureBox.Anchor = AnchorStyles.Top;
-            pictureBox.Image = Properties.Resources.TempProdPic;
+            pictureBox.BackColor = Color.Transparent;
+            pictureBox.Image = Properties.Resources.ProductTempPic;
             pictureBox.Location = new Point(5, 5);
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size(150, 150);
@@ -79,7 +80,9 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // 
             // nameLabel
             // 
-            nameLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            nameLabel.BackColor = Color.Transparent;
+            nameLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            nameLabel.ForeColor = Color.White;
             nameLabel.Location = new Point(5, 159);
             nameLabel.Name = "nameLabel";
             nameLabel.Size = new Size(150, 42);
@@ -90,7 +93,9 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // 
             // priceLabel
             // 
-            priceLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            priceLabel.BackColor = Color.Transparent;
+            priceLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            priceLabel.ForeColor = Color.White;
             priceLabel.Location = new Point(5, 201);
             priceLabel.Name = "priceLabel";
             priceLabel.Size = new Size(150, 23);
@@ -101,10 +106,13 @@ namespace Y_S_System.MidPanels.ProdductLabel
             // 
             // stockLabel
             // 
-            stockLabel.Font = new Font("Roboto", 12F, FontStyle.Bold);
+            stockLabel.BackColor = Color.Transparent;
+            stockLabel.FlatStyle = FlatStyle.Popup;
+            stockLabel.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            stockLabel.ForeColor = Color.White;
             stockLabel.Location = new Point(5, 224);
             stockLabel.Name = "stockLabel";
-            stockLabel.Size = new Size(150, 18);
+            stockLabel.Size = new Size(150, 22);
             stockLabel.TabIndex = 3;
             stockLabel.Text = "0";
             stockLabel.TextAlign = ContentAlignment.TopCenter;
@@ -114,11 +122,14 @@ namespace Y_S_System.MidPanels.ProdductLabel
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(110, 172, 218);
+            BackgroundImage = Properties.Resources.ProductBG5;
+            BackgroundImageLayout = ImageLayout.Stretch;
             Controls.Add(stockLabel);
             Controls.Add(nameLabel);
             Controls.Add(pictureBox);
             Controls.Add(priceLabel);
             Cursor = Cursors.Hand;
+            DoubleBuffered = true;
             Name = "ProductBox";
             Size = new Size(160, 252);
             Click += ProductBox_Click;

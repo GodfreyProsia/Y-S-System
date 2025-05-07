@@ -20,6 +20,7 @@ using SkiaSharp;
 using ZXing.SkiaSharp.Rendering;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Google.Protobuf.Collections;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace Y_S_System.DetailPanels
 {
@@ -28,24 +29,32 @@ namespace Y_S_System.DetailPanels
         string connstring = connection.connstring;
         public string _role;
         public int _mode;
+        public int _id;
         public double currentStock;
         public double productPrice, productStock;
         public string ProductName = "";
         public string prodPicPath;
         public string barcodePicPath;
         public Bitmap barcodeBitmap;
-        public ProductDetails(string role, int mode)
+        bool goodToGo = false;
+
+        public ProductDetails(string role, int mode, int id)
         {
             InitializeComponent();
             _role = role;
             _mode = mode;
+            _id = id;
             setMode(_mode, _role);
             LoadUnit();
         }
-        
         private void btnAddProd_Click(object sender, EventArgs e)
         {
-            AddProduct();
+            goodToGo = checkFields(2);
+            if (goodToGo == true)
+            {
+                if (confirmation())
+                { AddProduct(); }
+            }
         }//Add Product Button
         private void btnUploadPic_Click(object sender, EventArgs e)
         {
@@ -58,6 +67,10 @@ namespace Y_S_System.DetailPanels
                 }
             }
         }//Upload Picture
+        private void btnDeleteProd_Click(object sender, EventArgs e)
+        {
+            if (confirmation()) { DeleteProduct(); }
+        }//Delete Product Button
         private async void btnGenerate_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(tbProdCode.Text))
@@ -89,11 +102,17 @@ namespace Y_S_System.DetailPanels
         }//Generate Barcode
         private void btnAddStock_Click(object sender, EventArgs e)
         {
-            updateStock();
+            if (string.IsNullOrWhiteSpace(tbProdStock.Text))
+            {
+                MessageBox.Show("Please enter a stock amount.");
+                return;
+            }
+            else if (confirmation())
+            { updateStock(); }
         }//Add Stock Button
         private void btnUpdateProd_Click(object sender, EventArgs e)
         {
-            UpdateProduct();
+            if (confirmation()) { UpdateProduct(); }
         }//Update Product Button
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -142,9 +161,9 @@ namespace Y_S_System.DetailPanels
                             }
                         }
                         loadInventoryHistory(ProductBarcode);
-                        if(_mode == 2)
+                        if (_mode == 2)
                         { setMode(3, _role); }
-                        
+
                     }
                 }
             }
@@ -173,7 +192,6 @@ namespace Y_S_System.DetailPanels
         }//Load Inventory History
         public void AddProduct()
         {
-            bool goodToGo = false;
 
             goodToGo = checkFields(2);
 
@@ -225,7 +243,7 @@ namespace Y_S_System.DetailPanels
                 string addFinnance = "INSERT INTO `yarnstitchdata`.`finnancesales` " +
                     "(`ProductBarcode`, `ProductName`, `ProductPrice`, `ProductUnit`, `ProductSold`, `ProductTotal`) " +
                     "VALUES (@ProductBarcode, @ProductName, @ProductPrice, @ProductUnit, @ProductSold, @ProductTotal)";
-                using(MySqlCommand cmd = new MySqlCommand(addFinnance, conn))
+                using (MySqlCommand cmd = new MySqlCommand(addFinnance, conn))
                 {
                     conn.Open();
                     cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
@@ -238,8 +256,9 @@ namespace Y_S_System.DetailPanels
                     conn.Close();
                 }
                 LoadUnit();
+
+                refresh();
             }
-            refresh();
         }//Add Product to Database
         public void UpdateProduct()
         {
@@ -562,8 +581,27 @@ namespace Y_S_System.DetailPanels
                     }
                 }
             }
-        }
-     
-        //Delete Button with confirmation()
-    }//Remember the inputted Units
+        }//Load Unit
+        private bool confirmation()
+        {
+            using (Confirmation form = new Confirmation(_id))
+            {
+                DialogResult result = form.ShowDialog();
+                return result == DialogResult.Yes;
+            }
+        }//Confirmation
+        private void DeleteProduct()
+        {
+            string deleteProd = "DELETE FROM `yarnstitchdata`.`products` WHERE `ProductBarcode` = @ProductBarcode";
+            MySqlConnection conn = new MySqlConnection(connstring);
+            using (MySqlCommand cmd = new MySqlCommand(deleteProd, conn))
+            {
+                conn.Open();
+                cmd.Parameters.AddWithValue("@ProductBarcode", tbProdCode.Text);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            refresh();
+        }//Delete Product
+    }
 }

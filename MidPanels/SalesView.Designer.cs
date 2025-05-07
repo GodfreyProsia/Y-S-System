@@ -31,50 +31,80 @@
             label2 = new Label();
             tbtSearch = new TextBox();
             dgvSales = new DataGridView();
-            cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
+            OrderID = new DataGridViewTextBoxColumn();
+            Date = new DataGridViewTextBoxColumn();
+            Cash = new DataGridViewTextBoxColumn();
+            Change = new DataGridViewTextBoxColumn();
+            Total = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvSales).BeginInit();
             SuspendLayout();
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(21, 22);
+            label2.Location = new Point(14, 17);
             label2.Name = "label2";
-            label2.Size = new Size(59, 19);
+            label2.Size = new Size(60, 20);
             label2.TabIndex = 13;
             label2.Text = "Search";
             // 
             // tbtSearch
             // 
-            tbtSearch.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tbtSearch.Location = new Point(86, 19);
+            tbtSearch.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbtSearch.Location = new Point(79, 14);
             tbtSearch.Name = "tbtSearch";
-            tbtSearch.Size = new Size(197, 27);
+            tbtSearch.Size = new Size(197, 26);
             tbtSearch.TabIndex = 12;
             tbtSearch.TextChanged += tbtSearch_TextChanged_1;
             // 
             // dgvSales
             // 
             dgvSales.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSales.BackgroundColor = Color.FromArgb(3, 52, 110);
             dgvSales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSales.Columns.AddRange(new DataGridViewColumn[] { OrderID, Date, Cash, Change, Total });
             dgvSales.GridColor = Color.FromArgb(2, 21, 38);
-            dgvSales.Location = new Point(12, 351);
+            dgvSales.Location = new Point(12, 51);
+            dgvSales.MultiSelect = false;
             dgvSales.Name = "dgvSales";
-            dgvSales.Size = new Size(645, 318);
-            dgvSales.TabIndex = 14;
-            dgvSales.CellContentClick += dgvSales_CellContentClick;
+            dgvSales.ReadOnly = true;
+            dgvSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSales.Size = new Size(645, 618);
+            dgvSales.TabIndex = 16;
+            dgvSales.CellClick += dgvSales_CellClick;
             // 
-            // cartesianChart1
+            // OrderID
             // 
-            cartesianChart1.Font = new Font("Roboto", 9F);
-            cartesianChart1.Location = new Point(12, 49);
-            cartesianChart1.MatchAxesScreenDataRatio = false;
-            cartesianChart1.Name = "cartesianChart1";
-            cartesianChart1.Size = new Size(645, 286);
-            cartesianChart1.TabIndex = 15;
+            OrderID.HeaderText = "OrderID";
+            OrderID.Name = "OrderID";
+            OrderID.ReadOnly = true;
+            // 
+            // Date
+            // 
+            Date.HeaderText = "Date";
+            Date.Name = "Date";
+            Date.ReadOnly = true;
+            // 
+            // Cash
+            // 
+            Cash.HeaderText = "Cash";
+            Cash.Name = "Cash";
+            Cash.ReadOnly = true;
+            // 
+            // Change
+            // 
+            Change.HeaderText = "Change";
+            Change.Name = "Change";
+            Change.ReadOnly = true;
+            // 
+            // Total
+            // 
+            Total.HeaderText = "Total";
+            Total.Name = "Total";
+            Total.ReadOnly = true;
             // 
             // SalesView
             // 
@@ -82,7 +112,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(2, 21, 38);
             ClientSize = new Size(669, 681);
-            Controls.Add(cartesianChart1);
             Controls.Add(dgvSales);
             Controls.Add(label2);
             Controls.Add(tbtSearch);
@@ -99,6 +128,10 @@
         private Label label2;
         private TextBox tbtSearch;
         private DataGridView dgvSales;
-        private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
+        private DataGridViewTextBoxColumn OrderID;
+        private DataGridViewTextBoxColumn Date;
+        private DataGridViewTextBoxColumn Cash;
+        private DataGridViewTextBoxColumn Change;
+        private DataGridViewTextBoxColumn Total;
     }
 }

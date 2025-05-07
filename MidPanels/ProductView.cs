@@ -27,8 +27,13 @@ namespace Y_S_System.MidPanels
         public void LoadProduct(string search)
         {
             productPanel.Controls.Clear();
-            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
-            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '%" + tbtSearch.Text + "%' OR `ProductBarcode` LIKE '%" + tbtSearch.Text + "%'";
+            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products` ORDER BY `ProductName` ASC;";
+
+            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` " +
+                                "WHERE `ProductName` LIKE '%" + tbtSearch.Text + "%' " +
+                                "OR `ProductBarcode` LIKE '%" + tbtSearch.Text + "%' " +
+                                "ORDER BY `ProductName` ASC;";
+
             MySqlConnection conn = new MySqlConnection(connstring);
             if (search == null)
             {
@@ -110,11 +115,11 @@ namespace Y_S_System.MidPanels
                     conn.Close();
                 }
             }
-        }
+        }//Load Data
 
         private void tbtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadProduct(tbtSearch.Text);
-        }
+        }//Search Text Box Handler
     }
 }

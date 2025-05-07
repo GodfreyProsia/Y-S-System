@@ -46,7 +46,7 @@ namespace Y_S_System.MidPanels
                     }
                 }
             }
-        }
+        }//Load Data
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
@@ -70,7 +70,7 @@ namespace Y_S_System.MidPanels
                     }
                 }
             }
-        }
+        }//Timer for checking for new orders
 
         private void dgvOrders_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -90,6 +90,6 @@ namespace Y_S_System.MidPanels
                     orderDetails.LoadOrderList(OrderID);
                 }
             }
-        }
+        }//dgvOrders Cell Click
     }
 }

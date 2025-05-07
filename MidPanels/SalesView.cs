@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Y_S_System.DetailPanels;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Y_S_System.MidPanels
 {
@@ -18,73 +21,72 @@ namespace Y_S_System.MidPanels
         public SalesView()
         {
             InitializeComponent();
+            LoadData(null);
         }
-        public void LoadData(string search )
+        public void LoadData(string search)
         {
             dgvSales.Rows.Clear();
-            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
-            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '%" + search + "%'";
+            string getSales = "SELECT * FROM `yarnstitchdata`.`sales` ORDER BY `Date` DESC;";
+
+            string searchSales = "SELECT * FROM `yarnstitchdata`.`sales` " +
+                                 "WHERE `OrderId` LIKE '%" + search + "%' " +
+                                 "ORDER BY `Date` DESC;"; 
             MySqlConnection conn = new MySqlConnection(connstring);
             if (string.IsNullOrEmpty(search))
             {
-                using (MySqlCommand cmd = new MySqlCommand(loadProduct, conn))
+                using (MySqlCommand cmd = new MySqlCommand(getSales, conn))
                 {
                     conn.Open();
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            dgvSales.Rows.Add(reader["ProductName"].ToString(),
-                                "Php " + reader["ProductPrice"].ToString() + " / " + reader["ProductUnit"].ToString(),
-                                reader["ProductStock"].ToString(),
-                                reader["ProductBarcode"].ToString());
+                            dgvSales.Rows.Add(reader["OrderId"].ToString(), reader["Date"].ToString(), reader["Cash"].ToString(), reader["Change"].ToString(), reader["Total"].ToString());
                         }
                     }
+                    conn.Close();
                 }
             }
-            else if (!string.IsNullOrEmpty(search))
+            else
             {
-                using (MySqlCommand cmd = new MySqlCommand(loadSearch, conn))
+                using (MySqlCommand cmd = new MySqlCommand(searchSales, conn))
                 {
                     conn.Open();
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            dgvSales.Rows.Add(reader["ProductName"].ToString(),
-                                reader["ProductPrice"].ToString() + "/" + reader["ProductUnit"].ToString(),
-                                reader["ProductStock"].ToString(),
-                                reader["ProductBarcode"].ToString());
+                            dgvSales.Rows.Add(reader["OrderId"].ToString(), reader["Date"].ToString(), reader["Cash"].ToString(), reader["Change"].ToString(), reader["Total"].ToString());
                         }
                     }
+                    conn.Close();
                 }
             }
-        }
-
-
-        private void dgvSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dgvSales.CurrentRow != null && dgvSales.Columns.Contains("Barcode"))
-            {
-                string ProductBarcode = dgvSales.CurrentRow.Cells["Barcode"].Value?.ToString();
-                foreach (var productDetails in Application.OpenForms.OfType<ProductDetails>())
-                {
-                    productDetails.LoadProduct(ProductBarcode);
-                }
-            }
-            else if (dgvSales.CurrentRow == null)
-            {
-                string ProductBarcode = dgvSales.CurrentRow.Cells["Barcode"].Value?.ToString();
-                foreach (var productDetails in Application.OpenForms.OfType<ProductDetails>())
-                {
-                    productDetails.clearFields();
-                }
-            }
-        }
+        }//Load Data
 
         private void tbtSearch_TextChanged_1(object sender, EventArgs e)
         {
             LoadData(tbtSearch.Text);
-        }
+        }//Search Text Box Handler
+
+        private void dgvSales_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string OrderID = dgvSales.CurrentRow.Cells["OrderID"].Value?.ToString();
+            if (!string.IsNullOrEmpty(OrderID))
+            {
+                foreach (var salesDetails in Application.OpenForms.OfType<SaleDetails>())
+                {
+                    salesDetails.LoadOrder(OrderID);
+                }
+            }
+            else
+            {
+                foreach (var salesDetails in Application.OpenForms.OfType<SaleDetails>())
+                {
+                    salesDetails.LoadOrder(null);
+                }
+            }
+        }//dgvSales Order Click
+
     }
 }

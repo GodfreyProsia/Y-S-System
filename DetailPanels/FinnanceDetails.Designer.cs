@@ -41,7 +41,7 @@
             Price = new DataGridViewTextBoxColumn();
             Total = new DataGridViewTextBoxColumn();
             OrderID = new DataGridViewTextBoxColumn();
-            label1 = new Label();
+            ViewLabel = new Label();
             lblSold = new Label();
             ((System.ComponentModel.ISupportInitialize)pbProdPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSale).BeginInit();
@@ -52,11 +52,11 @@
             lblBarcode.Anchor = AnchorStyles.Top;
             lblBarcode.AutoSize = true;
             lblBarcode.BackColor = Color.FromArgb(2, 21, 38);
-            lblBarcode.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblBarcode.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblBarcode.ForeColor = Color.White;
             lblBarcode.Location = new Point(171, 143);
             lblBarcode.Name = "lblBarcode";
-            lblBarcode.Size = new Size(68, 19);
+            lblBarcode.Size = new Size(69, 20);
             lblBarcode.TabIndex = 46;
             lblBarcode.Text = "Barcode";
             // 
@@ -66,11 +66,11 @@
             lblTotal.AutoEllipsis = true;
             lblTotal.AutoSize = true;
             lblTotal.BackColor = Color.FromArgb(2, 21, 38);
-            lblTotal.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTotal.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblTotal.ForeColor = Color.White;
             lblTotal.Location = new Point(11, 598);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(46, 19);
+            lblTotal.Size = new Size(44, 20);
             lblTotal.TabIndex = 44;
             lblTotal.Text = "Total";
             // 
@@ -79,11 +79,11 @@
             lblStock.Anchor = AnchorStyles.Top;
             lblStock.AutoSize = true;
             lblStock.BackColor = Color.FromArgb(2, 21, 38);
-            lblStock.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblStock.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblStock.ForeColor = Color.White;
             lblStock.Location = new Point(171, 176);
             lblStock.Name = "lblStock";
-            lblStock.Size = new Size(49, 19);
+            lblStock.Size = new Size(50, 20);
             lblStock.TabIndex = 43;
             lblStock.Text = "Stock";
             // 
@@ -92,11 +92,11 @@
             lblPrice.Anchor = AnchorStyles.Top;
             lblPrice.AutoSize = true;
             lblPrice.BackColor = Color.FromArgb(2, 21, 38);
-            lblPrice.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPrice.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPrice.ForeColor = Color.White;
             lblPrice.Location = new Point(171, 116);
             lblPrice.Name = "lblPrice";
-            lblPrice.Size = new Size(37, 15);
+            lblPrice.Size = new Size(38, 16);
             lblPrice.TabIndex = 42;
             lblPrice.Text = "Price";
             // 
@@ -106,11 +106,11 @@
             lblProdName.AutoEllipsis = true;
             lblProdName.AutoSize = true;
             lblProdName.BackColor = Color.FromArgb(2, 21, 38);
-            lblProdName.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblProdName.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblProdName.ForeColor = Color.White;
             lblProdName.Location = new Point(171, 86);
             lblProdName.Name = "lblProdName";
-            lblProdName.Size = new Size(55, 19);
+            lblProdName.Size = new Size(55, 20);
             lblProdName.TabIndex = 41;
             lblProdName.Text = "Name:";
             // 
@@ -137,6 +137,7 @@
             dgvSale.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSale.Size = new Size(367, 314);
             dgvSale.TabIndex = 39;
+            dgvSale.CellClick += dgvSale_CellClick;
             // 
             // Product
             // 
@@ -166,7 +167,7 @@
             // 
             Total.HeaderText = "Total";
             Total.Name = "Total";
-            Total.Width = 57;
+            Total.Width = 58;
             // 
             // OrderID
             // 
@@ -174,28 +175,28 @@
             OrderID.Name = "OrderID";
             OrderID.Width = 73;
             // 
-            // label1
+            // ViewLabel
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.FromArgb(2, 21, 38);
-            label1.Font = new Font("Lato", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.White;
-            label1.Location = new Point(11, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(289, 42);
-            label1.TabIndex = 38;
-            label1.Text = "Product Statistics";
+            ViewLabel.AutoSize = true;
+            ViewLabel.BackColor = Color.FromArgb(2, 21, 38);
+            ViewLabel.Font = new Font("Microsoft Sans Serif", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ViewLabel.ForeColor = Color.White;
+            ViewLabel.Location = new Point(11, 30);
+            ViewLabel.Name = "ViewLabel";
+            ViewLabel.Size = new Size(288, 39);
+            ViewLabel.TabIndex = 38;
+            ViewLabel.Text = "Product Statistics";
             // 
             // lblSold
             // 
             lblSold.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblSold.AutoSize = true;
             lblSold.BackColor = Color.FromArgb(2, 21, 38);
-            lblSold.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSold.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblSold.ForeColor = Color.White;
             lblSold.Location = new Point(11, 568);
             lblSold.Name = "lblSold";
-            lblSold.Size = new Size(123, 19);
+            lblSold.Size = new Size(121, 20);
             lblSold.TabIndex = 47;
             lblSold.Text = "Total Units Sold";
             // 
@@ -213,7 +214,7 @@
             Controls.Add(lblProdName);
             Controls.Add(pbProdPic);
             Controls.Add(dgvSale);
-            Controls.Add(label1);
+            Controls.Add(ViewLabel);
             ForeColor = Color.White;
             FormBorderStyle = FormBorderStyle.None;
             Name = "FinnanceDetails";
@@ -233,7 +234,7 @@
         private Label lblProdName;
         private PictureBox pbProdPic;
         private DataGridView dgvSale;
-        private Label label1;
+        private Label ViewLabel;
         private Label lblSold;
         private DataGridViewTextBoxColumn Product;
         private DataGridViewTextBoxColumn SoldDate;

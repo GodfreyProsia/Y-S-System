@@ -44,6 +44,19 @@ namespace Y_S_System
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            login();
+        }//login button
+
+        private void tbPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                login();
+            }
+        }//password enter key event
+        private void login()
+        {
             MySqlConnection conn = new MySqlConnection(connstring);
 
             string query = "SELECT * FROM `yarnstitchdata`.`accounts` WHERE (`Name` = @Username)";
@@ -61,7 +74,7 @@ namespace Y_S_System
                         {
                             role = reader["Role"].ToString();
                             logkey = Convert.ToInt32(reader["ID"]);
-                            _main.loadpage(new Home(role, logkey));
+                            _main.loadpage(new Home(role, logkey, _main));
                         }
                         else
                         {
@@ -75,6 +88,15 @@ namespace Y_S_System
                 }
                 conn.Close();
             }
-        }
+        }//login function
+
+        private void tbUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                login();
+            }
+        }//username enter key event
     }
 }

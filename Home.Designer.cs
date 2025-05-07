@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             TabPanel = new Panel();
+            pictureBox2 = new PictureBox();
             btnFinnance = new CustomControls.RJControls.RJButton();
             btnProducts = new CustomControls.RJControls.RJButton();
             btnSales = new CustomControls.RJControls.RJButton();
@@ -38,13 +40,17 @@
             pictureBox1 = new PictureBox();
             RightPanel = new Panel();
             MidPanel = new Panel();
+            NotificationTimer = new System.Windows.Forms.Timer(components);
+            Notification = new NotifyIcon(components);
             TabPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // TabPanel
             // 
             TabPanel.BackColor = Color.Transparent;
+            TabPanel.Controls.Add(pictureBox2);
             TabPanel.Controls.Add(btnFinnance);
             TabPanel.Controls.Add(btnProducts);
             TabPanel.Controls.Add(btnSales);
@@ -56,6 +62,19 @@
             TabPanel.Name = "TabPanel";
             TabPanel.Size = new Size(206, 681);
             TabPanel.TabIndex = 0;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            pictureBox2.Cursor = Cursors.Hand;
+            pictureBox2.Image = Properties.Resources.icons8_logout_96;
+            pictureBox2.Location = new Point(12, 632);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(39, 37);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 6;
+            pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox2_Click;
             // 
             // btnFinnance
             // 
@@ -72,13 +91,13 @@
             btnFinnance.BorderSize2 = 1;
             btnFinnance.FlatAppearance.BorderSize = 0;
             btnFinnance.FlatStyle = FlatStyle.Flat;
-            btnFinnance.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnFinnance.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnFinnance.ForeColor = Color.White;
             btnFinnance.Location = new Point(9, 261);
             btnFinnance.Name = "btnFinnance";
             btnFinnance.Size = new Size(191, 27);
             btnFinnance.TabIndex = 5;
-            btnFinnance.Text = "Finnance";
+            btnFinnance.Text = "Finance";
             btnFinnance.TextColor = Color.White;
             btnFinnance.UseVisualStyleBackColor = false;
             btnFinnance.Click += btnFinnance_Click;
@@ -98,7 +117,7 @@
             btnProducts.BorderSize2 = 1;
             btnProducts.FlatAppearance.BorderSize = 0;
             btnProducts.FlatStyle = FlatStyle.Flat;
-            btnProducts.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnProducts.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnProducts.ForeColor = Color.White;
             btnProducts.Location = new Point(9, 228);
             btnProducts.Name = "btnProducts";
@@ -124,7 +143,7 @@
             btnSales.BorderSize2 = 1;
             btnSales.FlatAppearance.BorderSize = 0;
             btnSales.FlatStyle = FlatStyle.Flat;
-            btnSales.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSales.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnSales.ForeColor = Color.White;
             btnSales.Location = new Point(9, 195);
             btnSales.Name = "btnSales";
@@ -150,7 +169,7 @@
             btnInventory.BorderSize2 = 1;
             btnInventory.FlatAppearance.BorderSize = 0;
             btnInventory.FlatStyle = FlatStyle.Flat;
-            btnInventory.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnInventory.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnInventory.ForeColor = Color.White;
             btnInventory.Location = new Point(9, 162);
             btnInventory.Name = "btnInventory";
@@ -176,7 +195,7 @@
             btnHome.BorderSize2 = 1;
             btnHome.FlatAppearance.BorderSize = 0;
             btnHome.FlatStyle = FlatStyle.Flat;
-            btnHome.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnHome.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnHome.ForeColor = Color.FromArgb(110, 172, 218);
             btnHome.Location = new Point(9, 129);
             btnHome.Name = "btnHome";
@@ -204,7 +223,6 @@
             // 
             RightPanel.AllowDrop = true;
             RightPanel.BackColor = Color.Transparent;
-            RightPanel.BorderStyle = BorderStyle.FixedSingle;
             RightPanel.Dock = DockStyle.Right;
             RightPanel.Location = new Point(875, 0);
             RightPanel.Name = "RightPanel";
@@ -214,12 +232,23 @@
             // MidPanel
             // 
             MidPanel.BackColor = Color.Transparent;
-            MidPanel.BorderStyle = BorderStyle.FixedSingle;
             MidPanel.Dock = DockStyle.Fill;
             MidPanel.Location = new Point(206, 0);
             MidPanel.Name = "MidPanel";
             MidPanel.Size = new Size(669, 681);
             MidPanel.TabIndex = 2;
+            // 
+            // NotificationTimer
+            // 
+            NotificationTimer.Enabled = true;
+            NotificationTimer.Interval = 5000;
+            NotificationTimer.Tick += NotificationTimer_Tick;
+            // 
+            // Notification
+            // 
+            Notification.BalloonTipIcon = ToolTipIcon.Warning;
+            Notification.Text = ".";
+            Notification.Visible = true;
             // 
             // Home
             // 
@@ -236,6 +265,7 @@
             Name = "Home";
             Text = "Home";
             TabPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -251,5 +281,8 @@
         private CustomControls.RJControls.RJButton btnInventory;
         private CustomControls.RJControls.RJButton btnHome;
         private CustomControls.RJControls.RJButton btnFinnance;
+        private PictureBox pictureBox2;
+        private System.Windows.Forms.Timer NotificationTimer;
+        private NotifyIcon Notification;
     }
 }

@@ -41,12 +41,13 @@
             // tbUsername
             // 
             tbUsername.Anchor = AnchorStyles.Top;
-            tbUsername.Font = new Font("Roboto", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbUsername.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbUsername.ForeColor = SystemColors.WindowText;
             tbUsername.Location = new Point(526, 496);
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(234, 33);
+            tbUsername.Size = new Size(234, 31);
             tbUsername.TabIndex = 0;
+            tbUsername.KeyDown += tbUsername_KeyDown;
             // 
             // pictureBox1
             // 
@@ -63,23 +64,24 @@
             // tbPassword
             // 
             tbPassword.Anchor = AnchorStyles.Top;
-            tbPassword.Font = new Font("Roboto", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbPassword.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbPassword.Location = new Point(528, 554);
             tbPassword.Name = "tbPassword";
-            tbPassword.PasswordChar = '*';
-            tbPassword.Size = new Size(234, 33);
+            tbPassword.PasswordChar = '•';
+            tbPassword.Size = new Size(234, 31);
             tbPassword.TabIndex = 2;
+            tbPassword.KeyDown += tbPassword_KeyDown;
             // 
             // label1
             // 
             label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.Location = new Point(528, 478);
             label1.Name = "label1";
-            label1.Size = new Size(67, 15);
+            label1.Size = new Size(70, 16);
             label1.TabIndex = 3;
             label1.Text = "Username";
             // 
@@ -88,11 +90,11 @@
             label2.Anchor = AnchorStyles.Top;
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
             label2.Location = new Point(528, 536);
             label2.Name = "label2";
-            label2.Size = new Size(65, 15);
+            label2.Size = new Size(67, 16);
             label2.TabIndex = 4;
             label2.Text = "Password";
             // 
@@ -112,7 +114,7 @@
             btnLogin.BorderSize2 = 0;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.FlatStyle = FlatStyle.Popup;
-            btnLogin.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLogin.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLogin.ForeColor = Color.Black;
             btnLogin.Location = new Point(575, 611);
             btnLogin.Name = "btnLogin";
@@ -128,11 +130,11 @@
             Invalid.Anchor = AnchorStyles.Top;
             Invalid.AutoSize = true;
             Invalid.BackColor = Color.Transparent;
-            Invalid.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Invalid.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Invalid.ForeColor = Color.Red;
             Invalid.Location = new Point(547, 593);
             Invalid.Name = "Invalid";
-            Invalid.Size = new Size(184, 15);
+            Invalid.Size = new Size(190, 16);
             Invalid.TabIndex = 7;
             Invalid.Text = "Invalid Username or Password";
             Invalid.Visible = false;

@@ -23,8 +23,13 @@ namespace Y_S_System.MidPanels
         public void LoadData(string search)
         {
             dgvInventory.Rows.Clear();
-            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products`";
-            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` WHERE `ProductName` LIKE '%" + search + "%'";
+            string loadProduct = "SELECT * FROM `yarnstitchdata`.`products` ORDER BY `ProductName` ASC;";
+
+            string loadSearch = "SELECT * FROM `yarnstitchdata`.`products` " +
+                                "WHERE `ProductName` LIKE '%" + search + "%' " +
+                                "OR `ProductBarcode` LIKE '%" + search + "%' " +
+                                "ORDER BY `ProductName` ASC;";
+
             MySqlConnection conn = new MySqlConnection(connstring);
             if (string.IsNullOrEmpty(search))
             {
@@ -60,7 +65,7 @@ namespace Y_S_System.MidPanels
                     }
                 }
             }
-        }
+        }//Load Data
 
         private void dgvInventory_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -80,11 +85,11 @@ namespace Y_S_System.MidPanels
                     productDetails.clearFields();
                 }
             }
-        }
+        }//dgvInventory Cell Click
 
         private void tbtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadData(tbtSearch.Text);
-        }
+        }//Search Text Box Handler
     }
 }

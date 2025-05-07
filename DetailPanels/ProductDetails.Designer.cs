@@ -60,10 +60,10 @@
             // 
             // tbProdName
             // 
-            tbProdName.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdName.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbProdName.Location = new Point(69, 232);
             tbProdName.Name = "tbProdName";
-            tbProdName.Size = new Size(307, 27);
+            tbProdName.Size = new Size(307, 26);
             tbProdName.TabIndex = 33;
             // 
             // btnDeleteProd
@@ -82,7 +82,7 @@
             btnDeleteProd.BorderSize2 = 0;
             btnDeleteProd.FlatAppearance.BorderSize = 0;
             btnDeleteProd.FlatStyle = FlatStyle.Flat;
-            btnDeleteProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnDeleteProd.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnDeleteProd.ForeColor = Color.Black;
             btnDeleteProd.Location = new Point(270, 619);
             btnDeleteProd.Name = "btnDeleteProd";
@@ -91,16 +91,17 @@
             btnDeleteProd.Text = "Delete";
             btnDeleteProd.TextColor = Color.Black;
             btnDeleteProd.UseVisualStyleBackColor = false;
+            btnDeleteProd.Click += btnDeleteProd_Click;
             // 
             // lblProdName
             // 
             lblProdName.AutoEllipsis = true;
             lblProdName.AutoSize = true;
-            lblProdName.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblProdName.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblProdName.ForeColor = Color.White;
             lblProdName.Location = new Point(12, 235);
             lblProdName.Name = "lblProdName";
-            lblProdName.Size = new Size(51, 19);
+            lblProdName.Size = new Size(51, 20);
             lblProdName.TabIndex = 23;
             lblProdName.Text = "Name";
             // 
@@ -117,81 +118,81 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Lato", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 26.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
             label1.Location = new Point(11, 15);
             label1.Name = "label1";
-            label1.Size = new Size(256, 42);
+            label1.Size = new Size(253, 39);
             label1.TabIndex = 20;
             label1.Text = "Product Details";
             // 
             // tbProdPrice
             // 
-            tbProdPrice.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdPrice.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbProdPrice.Location = new Point(69, 265);
             tbProdPrice.Name = "tbProdPrice";
-            tbProdPrice.Size = new Size(96, 27);
+            tbProdPrice.Size = new Size(96, 26);
             tbProdPrice.TabIndex = 37;
             // 
             // label2
             // 
             label2.AutoEllipsis = true;
             label2.AutoSize = true;
-            label2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
             label2.Location = new Point(12, 268);
             label2.Name = "label2";
-            label2.Size = new Size(45, 19);
+            label2.Size = new Size(44, 20);
             label2.TabIndex = 36;
             label2.Text = "Price";
             // 
             // tbProdID
             // 
-            tbProdID.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdID.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbProdID.Location = new Point(69, 298);
             tbProdID.Name = "tbProdID";
-            tbProdID.Size = new Size(307, 27);
+            tbProdID.Size = new Size(307, 26);
             tbProdID.TabIndex = 39;
             // 
             // label3
             // 
             label3.AutoEllipsis = true;
             label3.AutoSize = true;
-            label3.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.White;
             label3.Location = new Point(12, 301);
             label3.Name = "label3";
-            label3.Size = new Size(25, 19);
+            label3.Size = new Size(26, 20);
             label3.TabIndex = 38;
             label3.Text = "ID";
             // 
             // tbProdStock
             // 
-            tbProdStock.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdStock.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbProdStock.Location = new Point(70, 331);
             tbProdStock.Name = "tbProdStock";
-            tbProdStock.Size = new Size(117, 27);
+            tbProdStock.Size = new Size(117, 26);
             tbProdStock.TabIndex = 41;
             // 
             // label6
             // 
             label6.AutoEllipsis = true;
             label6.AutoSize = true;
-            label6.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label6.ForeColor = Color.White;
             label6.Location = new Point(171, 268);
             label6.Name = "label6";
-            label6.Size = new Size(16, 19);
+            label6.Size = new Size(13, 20);
             label6.TabIndex = 44;
             label6.Text = "/";
             // 
             // cbProdUnit
             // 
-            cbProdUnit.Font = new Font("Roboto", 12F);
+            cbProdUnit.Font = new Font("Microsoft Sans Serif", 12F);
             cbProdUnit.FormattingEnabled = true;
             cbProdUnit.Location = new Point(193, 265);
             cbProdUnit.Name = "cbProdUnit";
-            cbProdUnit.Size = new Size(121, 27);
+            cbProdUnit.Size = new Size(121, 28);
             cbProdUnit.TabIndex = 46;
             // 
             // btnUploadPic
@@ -209,7 +210,7 @@
             btnUploadPic.BorderSize2 = 0;
             btnUploadPic.FlatAppearance.BorderSize = 0;
             btnUploadPic.FlatStyle = FlatStyle.Flat;
-            btnUploadPic.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnUploadPic.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUploadPic.ForeColor = Color.Black;
             btnUploadPic.Location = new Point(171, 71);
             btnUploadPic.Name = "btnUploadPic";
@@ -247,7 +248,7 @@
             btnUpdateProd.BorderSize2 = 0;
             btnUpdateProd.FlatAppearance.BorderSize = 0;
             btnUpdateProd.FlatStyle = FlatStyle.Flat;
-            btnUpdateProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnUpdateProd.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUpdateProd.ForeColor = Color.Black;
             btnUpdateProd.Location = new Point(140, 619);
             btnUpdateProd.Name = "btnUpdateProd";
@@ -262,11 +263,11 @@
             // 
             label4.AutoEllipsis = true;
             label4.AutoSize = true;
-            label4.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.White;
             label4.Location = new Point(12, 334);
             label4.Name = "label4";
-            label4.Size = new Size(49, 19);
+            label4.Size = new Size(50, 20);
             label4.TabIndex = 40;
             label4.Text = "Stock";
             // 
@@ -275,11 +276,11 @@
             label5.Anchor = AnchorStyles.Top;
             label5.AutoEllipsis = true;
             label5.AutoSize = true;
-            label5.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.White;
             label5.Location = new Point(11, 367);
             label5.Name = "label5";
-            label5.Size = new Size(131, 19);
+            label5.Size = new Size(127, 20);
             label5.TabIndex = 50;
             label5.Text = "Inventory History";
             // 
@@ -299,7 +300,7 @@
             btnAddProd.BorderSize2 = 0;
             btnAddProd.FlatAppearance.BorderSize = 0;
             btnAddProd.FlatStyle = FlatStyle.Flat;
-            btnAddProd.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAddProd.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAddProd.ForeColor = Color.Black;
             btnAddProd.Location = new Point(12, 619);
             btnAddProd.Name = "btnAddProd";
@@ -312,10 +313,10 @@
             // 
             // tbProdCode
             // 
-            tbProdCode.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbProdCode.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbProdCode.Location = new Point(171, 194);
             tbProdCode.Name = "tbProdCode";
-            tbProdCode.Size = new Size(205, 27);
+            tbProdCode.Size = new Size(205, 26);
             tbProdCode.TabIndex = 52;
             // 
             // btnGenerate
@@ -333,7 +334,7 @@
             btnGenerate.BorderSize2 = 0;
             btnGenerate.FlatAppearance.BorderSize = 0;
             btnGenerate.FlatStyle = FlatStyle.Flat;
-            btnGenerate.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnGenerate.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGenerate.ForeColor = Color.Black;
             btnGenerate.Location = new Point(251, 331);
             btnGenerate.Name = "btnGenerate";
@@ -368,7 +369,7 @@
             btnAddStock.BorderSize2 = 0;
             btnAddStock.FlatAppearance.BorderSize = 0;
             btnAddStock.FlatStyle = FlatStyle.Flat;
-            btnAddStock.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAddStock.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAddStock.ForeColor = Color.Black;
             btnAddStock.Location = new Point(193, 331);
             btnAddStock.Name = "btnAddStock";
@@ -396,7 +397,7 @@
             btnClear.BorderSize2 = 0;
             btnClear.FlatAppearance.BorderSize = 0;
             btnClear.FlatStyle = FlatStyle.Flat;
-            btnClear.Font = new Font("Roboto", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnClear.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnClear.ForeColor = Color.Black;
             btnClear.Location = new Point(12, 619);
             btnClear.Name = "btnClear";

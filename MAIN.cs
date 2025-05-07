@@ -29,6 +29,6 @@ namespace Y_S_System
             this.MainPanel.Controls.Add(f);
             this.MainPanel.Tag = f;
             f.Show();
-        }
+        }//load the main page
     }
 }
